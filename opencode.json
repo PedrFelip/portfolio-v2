@@ -47,12 +47,7 @@
     {
       "name": "quality-agent",
       "description": "Handles code quality, testing, and linting",
-      "capabilities": [
-        "run-tests",
-        "lint-code",
-        "format-code",
-        "check-types"
-      ],
+      "capabilities": ["run-tests", "lint-code", "format-code", "check-types"],
       "guidelines": "Ensure all code passes Biome linting, maintain test coverage, enforce TypeScript strict mode"
     }
   ],

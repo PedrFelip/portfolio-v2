@@ -3,8 +3,14 @@ export interface Project {
   title: string;
   description: string;
   technologies: string[];
-  link?: string;
-  createdAt: Date;
+  links?: {
+    github?: string;
+    demo?: string;
+    website?: string;
+  };
+  dates?: string;
+  active?: boolean;
+  featured?: boolean;
 }
 
 export type ApiResponse<T> = {
@@ -12,3 +18,21 @@ export type ApiResponse<T> = {
   success: boolean;
   error?: string;
 };
+
+export interface WorkExperience {
+  company: string;
+  title: string;
+  location: string;
+  start: string;
+  end: string;
+  description?: string;
+  href?: string;
+}
+
+export interface Education {
+  school: string;
+  degree: string;
+  start: string;
+  end: string;
+  href?: string;
+}
