@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -69,7 +69,7 @@ export const Navigation = () => {
             <button
               type="button"
               onClick={toggleLanguage}
-              className="inline-flex items-center gap-1.5 sm:gap-2 rounded border border-border bg-background px-2 sm:px-3 py-1.5 text-xs font-mono font-medium text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+              className="inline-flex items-center gap-1.5 sm:gap-2 rounded border border-border bg-background px-2 sm:px-3 py-1.5 text-xs font-mono font-medium text-muted-foreground transition-all duration-200 hover:border-foreground hover:text-foreground hover:bg-muted/50 active:scale-95"
               aria-label={t.nav.language}
             >
               <span className="hidden sm:inline">{LANGUAGES[language]}</span>
@@ -82,13 +82,14 @@ export const Navigation = () => {
             <button
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex md:hidden items-center gap-2 rounded border border-border bg-background px-2.5 py-1.5 text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+              className="inline-flex md:hidden items-center gap-2 rounded border border-border bg-background px-2.5 py-1.5 text-muted-foreground transition-all duration-200 hover:border-foreground hover:text-foreground hover:bg-muted/50 active:scale-95"
               aria-label={t.nav.toggleMenu}
+              aria-expanded={isMenuOpen}
             >
               {isMenuOpen ? (
-                <X className="h-5 w-5" />
+                <X className="h-5 w-5 transition-transform duration-200 rotate-90" />
               ) : (
-                <Menu className="h-5 w-5" />
+                <Menu className="h-5 w-5 transition-transform duration-200" />
               )}
             </button>
           </div>
@@ -96,17 +97,20 @@ export const Navigation = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="border-t border-border bg-card md:hidden">
-            <div className="flex flex-col gap-1 px-0 py-3">
-              {navLinks.map((link) => (
+          <div className="animate-in fade-in slide-in-from-top-2 duration-200 border-t border-border md:hidden">
+            <div className="flex flex-col px-0 py-2">
+              {navLinks.map((link, index) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={closeMenu}
-                  className={`px-4 py-2.5 text-sm font-medium transition-colors ${
+                  style={{
+                    animationDelay: `${index * 50}ms`,
+                  }}
+                  className={`animate-in fade-in slide-in-from-left-4 duration-300 px-4 py-3 text-sm font-medium transition-all ${
                     isActive(link.href)
-                      ? "text-foreground bg-muted/50 border-l-2 border-foreground"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
+                      ? "text-foreground bg-muted/60 border-l-2 border-foreground"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
                   }`}
                 >
                   {link.label}
