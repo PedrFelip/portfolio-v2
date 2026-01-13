@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import { Home, Github, Linkedin, Twitter, Mail } from 'lucide-react';
-import { socialLinks } from '@/lib/links';
-import type { SocialLink } from '@/lib/links';
+import { Github, Home, Linkedin, Mail, Twitter } from "lucide-react";
+import { useEffect } from "react";
+import type { SocialLink } from "@/lib/links";
+import { socialLinks } from "@/lib/links";
 
 const iconMap = {
   portfolio: Home,
@@ -13,6 +14,19 @@ const iconMap = {
 };
 
 export default function LinksPage() {
+  // Hide navigation on this page
+  useEffect(() => {
+    const nav = document.querySelector("nav");
+    if (nav) {
+      nav.style.display = "none";
+    }
+    return () => {
+      if (nav) {
+        nav.style.display = "";
+      }
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background px-4 py-24">
       <div className="mx-auto max-w-md">
@@ -34,8 +48,10 @@ export default function LinksPage() {
               <a
                 key={link.label}
                 href={link.url}
-                target={link.icon === 'portfolio' ? '_self' : '_blank'}
-                rel={link.icon === 'portfolio' ? undefined : 'noopener noreferrer'}
+                target={link.icon === "portfolio" ? "_self" : "_blank"}
+                rel={
+                  link.icon === "portfolio" ? undefined : "noopener noreferrer"
+                }
                 className="flex items-center gap-3 rounded-lg border border-border bg-card px-6 py-4 transition-colors hover:border-foreground hover:bg-muted"
               >
                 <Icon className="h-5 w-5 text-muted-foreground" />
