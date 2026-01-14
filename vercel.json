@@ -3,7 +3,6 @@
   "devCommand": "bun run dev",
   "installCommand": "bun install",
   "framework": "nextjs",
-  "nodeVersion": "22.x",
   "env": {
     "NEXT_PUBLIC_API_URL": {
       "default": "https://portfolio.vercel.app"
