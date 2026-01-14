@@ -22,8 +22,8 @@ export const translations = {
 
     // Hero Section
     hero: {
-      greeting: "Hi, I'm Pedro Felipe 👋",
-      title: "Backend Engineer & System Architect",
+      greeting: "Hi, I'm Pedro Felipe",
+      title: "Backend Engineer & DevOps Enthusiast",
       subtitle: "Backend Developer & DevOps Enthusiast",
       description:
         "Building scalable, maintainable systems focused on efficiency and reliability",
@@ -190,8 +190,8 @@ export const translations = {
 
     // Hero Section
     hero: {
-      greeting: "Olá, Sou Pedro Felipe 👋",
-      title: "Engenheiro Backend & Arquiteto de Sistemas",
+      greeting: "Olá, Sou Pedro Felipe",
+      title: "Engenheiro Backend & Entusiasta DevOps",
       subtitle: "Desenvolvedor Backend & Entusiasta DevOps",
       description:
         "Construindo sistemas escaláveis e manteníveis focados em eficiência e confiabilidade",
@@ -206,7 +206,7 @@ export const translations = {
       intro:
         "I am a backend engineer passionate about designing robust and scalable systems.",
       description:
-        "I'm a backend developer passionate about **system design**, **cloud infrastructure**, and **automation**. I build scalable APIs, implement Infrastructure as Code, and design reliable, maintainable systems that support growth. My main stack includes **Node.js**, **TypeScript**, **Go**, **PostgreSQL**, **Docker**, and **Linux**. I'm also a long-time Linux user — always experimenting with setups and optimizing environments to make development faster and cleaner. I believe in learning by building, continuously improving my craft through hands-on projects and real-world challenges.",
+        "I'm a backend developer passionate about **system design**, **cloud infrastructure**, and **automation**. I build scalable APIs, implement Infrastructure as Code, and design reliable, maintainable systems that support growth. My main stack includes **Node.js**, **TypeScript**, **NestJS**, **PostgreSQL**, **Docker**, and **Linux**. I'm also a long-time Linux user always experimenting with setups and optimizing environments to make development faster and cleaner. I believe in learning by building, continuously improving my craft through hands-on projects and real-world challenges.",
     },
 
     // Work Section

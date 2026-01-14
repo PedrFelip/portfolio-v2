@@ -21,25 +21,47 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
 
 const STORAGE_KEY = "portfolio-language";
 
-export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguageState] = useState<Language>(DEFAULT_LANGUAGE);
+export const LanguageProvider = ({
+  children,
+  initialLanguage,
+}: {
+  children: ReactNode;
+  initialLanguage?: Language;
+}) => {
+  // Initialize with the server-provided language to avoid hydration mismatch
+  const [language, setLanguageState] = useState<Language>(
+    initialLanguage || DEFAULT_LANGUAGE,
+  );
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // Load from localStorage or detect browser language
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored && (stored === "en" || stored === "pt")) {
-      setLanguageState(stored);
-    } else {
-      // Detect browser language
-      const browserLang = navigator.language.startsWith("pt") ? "pt" : "en";
-      setLanguageState(browserLang);
-      localStorage.setItem(STORAGE_KEY, browserLang);
-    }
+    setIsClient(true);
   }, []);
+
+  // Only run language detection on client-side and after hydration
+  useEffect(() => {
+    if (!isClient) return;
+
+    // Detect language from URL
+    const pathname = window.location.pathname;
+    const pathParts = pathname.split("/").filter(Boolean);
+    const langFromUrl = pathParts[0];
+
+    if (langFromUrl === "pt" || langFromUrl === "en") {
+      setLanguageState(langFromUrl);
+      localStorage.setItem(STORAGE_KEY, langFromUrl);
+    }
+  }, [isClient]);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     localStorage.setItem(STORAGE_KEY, lang);
+    // Navigate to the new language path
+    const pathname = window.location.pathname;
+    const pathParts = pathname.split("/").filter(Boolean);
+    const currentLang = pathParts[0];
+    const newPath = pathname.replace(`/${currentLang}`, `/${lang}`);
+    window.location.pathname = newPath;
   };
 
   const t = translations[language];

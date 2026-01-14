@@ -3,9 +3,11 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/LanguageContext";
+import { useLocalizedLink } from "@/lib/useLocalizedLink";
 
 export const Hero = () => {
   const { t } = useLanguage();
+  const getLocalizedLink = useLocalizedLink();
 
   return (
     <section className="py-16 sm:py-24 md:py-32">
@@ -28,7 +30,7 @@ export const Hero = () => {
         {/* CTAs */}
         <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row mb-12 sm:mb-16">
           <Link
-            href="/projects"
+            href={getLocalizedLink("/projects")}
             className="group inline-flex items-center justify-center gap-2 rounded border border-foreground bg-foreground px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-background transition-all hover:bg-background hover:text-foreground"
           >
             {t.hero.cta}
@@ -36,7 +38,7 @@ export const Hero = () => {
           </Link>
 
           <Link
-            href="/about"
+            href={getLocalizedLink("/about")}
             className="inline-flex items-center justify-center gap-2 rounded border border-border bg-background px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-foreground transition-colors hover:border-foreground hover:bg-muted"
           >
             {t.hero.ctaSecondary}
@@ -45,16 +47,21 @@ export const Hero = () => {
 
         {/* Tech Stack Badge */}
         <div className="flex flex-wrap gap-2">
-          {["Node.js", "TypeScript", "Go", "PostgreSQL", "Docker", "Linux"].map(
-            (tech) => (
-              <span
-                key={tech}
-                className="rounded border border-border bg-muted px-2.5 sm:px-3 py-1 font-mono text-xs text-muted-foreground"
-              >
-                {tech}
-              </span>
-            ),
-          )}
+          {[
+            "Node.js",
+            "TypeScript",
+            "NestJS",
+            "PostgreSQL",
+            "Docker",
+            "Linux",
+          ].map((tech) => (
+            <span
+              key={tech}
+              className="rounded border border-border bg-muted px-2.5 sm:px-3 py-1 font-mono text-xs text-muted-foreground"
+            >
+              {tech}
+            </span>
+          ))}
         </div>
       </div>
     </section>

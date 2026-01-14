@@ -34,9 +34,9 @@ export const getEducation = (language: "en" | "pt"): Education[] => {
     return [
       {
         school: "UNICEPLAC",
-        degree: "[Seu Curso/Grau - será preenchido depois]",
-        start: "[Ano início]",
-        end: "[Ano fim ou Presente]",
+        degree: "Engenharia de Software",
+        start: "2024",
+        end: "2028",
       },
     ];
   }
@@ -44,9 +44,9 @@ export const getEducation = (language: "en" | "pt"): Education[] => {
   return [
     {
       school: "UNICEPLAC",
-      degree: "[Your Course/Degree - to be filled later]",
-      start: "[Start year]",
-      end: "[End year or Present]",
+      degree: "Software Engineering",
+      start: "2024",
+      end: "2028",
     },
   ];
 };

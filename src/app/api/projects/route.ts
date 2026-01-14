@@ -1,4 +1,4 @@
-import { projects } from "@/lib/data";
+import { projects } from "@/lib/projects-data";
 import type { ApiResponse, Project } from "@/types/portfolio";
 
 export const GET = async (): Promise<Response> => {

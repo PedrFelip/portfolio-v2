@@ -2,8 +2,8 @@
 
 import { useMemo } from "react";
 import { ProjectCard } from "@/components/ProjectCard";
-import { getProjects } from "@/lib/data";
 import { useLanguage } from "@/lib/LanguageContext";
+import { getProjects } from "@/lib/projects-data";
 
 export default function ProjectsPage() {
   const { t, language } = useLanguage();

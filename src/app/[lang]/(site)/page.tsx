@@ -4,27 +4,19 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { Hero } from "@/components/Hero";
 import { ProjectCard } from "@/components/ProjectCard";
-import { getFeaturedProjects } from "@/lib/data";
+import { getHomeSkills } from "@/lib/home-data";
 import { useLanguage } from "@/lib/LanguageContext";
+import { getFeaturedProjects } from "@/lib/projects-data";
+import { useLocalizedLink } from "@/lib/useLocalizedLink";
 
 export default function Home() {
   const { t, language } = useLanguage();
+  const getLocalizedLink = useLocalizedLink();
 
-  const skills = [
-    {
-      category: t.skills.backend,
-      items: ["Node.js", "TypeScript", "Go", "Fastify", "Express", "Prisma"],
-    },
-    { category: t.skills.databases, items: ["PostgreSQL", "SQLite", "Redis"] },
-    {
-      category: t.skills.devops,
-      items: ["Docker", "Linux", "Cloud Architecture", "API Design"],
-    },
-    {
-      category: t.skills.tools,
-      items: ["Git", "REST APIs", "System Design", "Microservices"],
-    },
-  ];
+  const skills = useMemo(
+    () => getHomeSkills(language as "en" | "pt"),
+    [language],
+  );
 
   const featuredProjects = useMemo(
     () => getFeaturedProjects(language as "en" | "pt"),
@@ -62,7 +54,7 @@ export default function Home() {
           {/* View All Projects Link */}
           <div className="mt-8 sm:mt-12 text-center">
             <Link
-              href="/projects"
+              href={getLocalizedLink("/projects")}
               className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {t.projects.viewAll}

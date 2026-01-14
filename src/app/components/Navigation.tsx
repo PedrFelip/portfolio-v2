@@ -1,15 +1,17 @@
 "use client";
 
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { LANGUAGES } from "@/lib/i18n";
 import { useLanguage } from "@/lib/LanguageContext";
+import { useLocalizedLink } from "@/lib/useLocalizedLink";
 
 export const Navigation = () => {
   const pathname = usePathname();
   const { language, setLanguage, t } = useLanguage();
+  const getLocalizedLink = useLocalizedLink();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
@@ -40,7 +42,7 @@ export const Navigation = () => {
         <div className="flex h-14 sm:h-16 items-center justify-between">
           {/* Logo/Name */}
           <Link
-            href="/"
+            href={getLocalizedLink("/")}
             className="font-mono text-xs sm:text-sm font-semibold tracking-tight text-foreground transition-colors hover:text-primary"
           >
             Pedro Felipe
@@ -51,7 +53,7 @@ export const Navigation = () => {
             {navLinks.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
+                href={getLocalizedLink(link.href)}
                 className={`text-xs sm:text-sm font-medium transition-colors ${
                   isActive(link.href)
                     ? "text-foreground"
@@ -102,7 +104,7 @@ export const Navigation = () => {
               {navLinks.map((link, index) => (
                 <Link
                   key={link.href}
-                  href={link.href}
+                  href={getLocalizedLink(link.href)}
                   onClick={closeMenu}
                   style={{
                     animationDelay: `${index * 50}ms`,
