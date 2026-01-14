@@ -20,7 +20,6 @@ interface BlogListProps {
 }
 
 export function BlogList({
-  initialPosts,
   allPosts,
   postsPerPage,
   translations,

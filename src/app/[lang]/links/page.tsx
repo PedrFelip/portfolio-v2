@@ -14,7 +14,7 @@ const iconMap = {
 };
 
 export default function LinksPage() {
-  const { t } = useLanguage();
+  useLanguage();
 
   return (
     <>

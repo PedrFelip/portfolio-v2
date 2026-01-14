@@ -66,6 +66,7 @@ export function getAllPosts(): BlogMetadata[] {
       if (!post) return null;
 
       // Return only metadata for list view
+      // biome-ignore lint/correctness/noUnusedVariables: intentionally extracting content to exclude from metadata
       const { content, ...metadata } = post;
       return metadata;
     })

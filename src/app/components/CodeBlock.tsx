@@ -15,13 +15,25 @@ export function CodeBlock({ children, className }: CodeBlockProps) {
   const copyToClipboard = async () => {
     try {
       // Extract text content from children
-      const text =
-        typeof children === "string"
-          ? children
-          : (children as any)?.props?.children || "";
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      let text = "";
+      if (typeof children === "string") {
+        text = children;
+      } else if (
+        children &&
+        typeof children === "object" &&
+        "props" in children &&
+        children.props &&
+        typeof children.props === "object" &&
+        "children" in children.props &&
+        typeof children.props.children === "string"
+      ) {
+        text = children.props.children;
+      }
+      if (text) {
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
     } catch (err) {
       console.error("Failed to copy:", err);
     }
