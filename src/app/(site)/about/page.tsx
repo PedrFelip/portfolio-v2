@@ -11,6 +11,7 @@ import {
   getWorkExperience,
 } from "@/lib/aboutData";
 import { useLanguage } from "@/lib/LanguageContext";
+import { getSkills } from "@/lib/shared-data";
 
 export default function AboutPage() {
   const { t, language } = useLanguage();
@@ -30,39 +31,38 @@ export default function AboutPage() {
     [language],
   );
 
-  const skills = [
-    {
-      category: t.skills.backend,
-      items: ["Node.js", "TypeScript", "Go", "Fastify", "Express", "Prisma"],
-    },
-    { category: t.skills.databases, items: ["PostgreSQL", "SQLite", "Redis"] },
-    {
-      category: t.skills.devops,
-      items: ["Docker", "Linux", "Cloud Architecture", "API Design"],
-    },
-    {
-      category: t.skills.tools,
-      items: ["Git", "REST APIs", "System Design", "Microservices"],
-    },
-  ];
+  const skills = useMemo(() => getSkills(language as "en" | "pt"), [language]);
 
   // Parse markdown bold (**text**) to JSX
-  const parseDescription = (text: string) => {
+  const parseDescription = (
+    text: string,
+  ): (string | React.JSX.Element)[] | null => {
+    if (!text) return null;
+
     const parts = text.split(/(\*\*.*?\*\*)/g);
-    return parts.map((part) => {
+    const result: (string | React.JSX.Element)[] = [];
+    let keyCounter = 0;
+
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i];
+      if (!part) continue;
+
       if (part.startsWith("**") && part.endsWith("**")) {
         const content = part.slice(2, -2);
-        return (
+        result.push(
           <strong
-            key={`bold-${content}`}
+            key={`bold-${keyCounter++}`}
             className="font-semibold text-foreground"
           >
             {content}
-          </strong>
+          </strong>,
         );
+      } else {
+        result.push(part);
       }
-      return <span key={`text-${part.substring(0, 20)}`}>{part}</span>;
-    });
+    }
+
+    return result;
   };
 
   return (
@@ -75,9 +75,6 @@ export default function AboutPage() {
         <h1 className="mb-6 text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-foreground">
           {t.about.title}
         </h1>
-        <p className="mb-6 text-base sm:text-lg text-muted-foreground">
-          {t.about.intro}
-        </p>
         <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
           {parseDescription(t.about.description)}
         </p>
