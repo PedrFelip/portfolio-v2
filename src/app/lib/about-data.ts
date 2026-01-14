@@ -1,5 +1,25 @@
-import type { Education, WorkExperience } from "@/types/portfolio";
+/**
+ * About page data - Work experience, education, and contact links
+ * Consolidated content for the about page
+ */
+
 import { socialLinks } from "./links";
+
+export interface WorkExperience {
+  company: string;
+  title: string;
+  location: string;
+  start: string;
+  end: string;
+  description: string;
+}
+
+export interface Education {
+  school: string;
+  degree: string;
+  start: string;
+  end: string;
+}
 
 export const getWorkExperience = (language: "en" | "pt"): WorkExperience[] => {
   if (language === "pt") {

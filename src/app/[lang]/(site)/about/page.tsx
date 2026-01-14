@@ -9,7 +9,7 @@ import {
   getContactLinks,
   getEducation,
   getWorkExperience,
-} from "@/lib/aboutData";
+} from "@/lib/about-data";
 import { useLanguage } from "@/lib/LanguageContext";
 import { getSkills } from "@/lib/shared-data";
 

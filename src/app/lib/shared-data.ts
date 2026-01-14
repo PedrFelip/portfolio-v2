@@ -26,3 +26,8 @@ export const getSkills = (language: "en" | "pt"): SkillGroup[] => {
     },
   ];
 };
+
+// Alias for consistency with home-data usage
+export const getHomeSkills = (language: "en" | "pt"): SkillGroup[] => {
+  return getSkills(language);
+};

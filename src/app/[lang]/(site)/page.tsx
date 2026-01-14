@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { Hero } from "@/components/Hero";
 import { ProjectCard } from "@/components/ProjectCard";
-import { getHomeSkills } from "@/lib/home-data";
+import { getHomeSkills } from "@/lib/shared-data";
 import { useLanguage } from "@/lib/LanguageContext";
 import { getFeaturedProjects } from "@/lib/projects-data";
 import { useLocalizedLink } from "@/lib/useLocalizedLink";
