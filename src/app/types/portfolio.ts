@@ -36,3 +36,20 @@ export interface Education {
   end: string;
   href?: string;
 }
+
+export interface BlogPost {
+  slug: string;
+  title: string;
+  date: string;
+  excerpt: string;
+  tags: string[];
+  content: string;
+}
+
+export interface BlogMetadata {
+  slug: string;
+  title: string;
+  date: string;
+  excerpt: string;
+  tags: string[];
+}

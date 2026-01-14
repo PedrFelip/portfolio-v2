@@ -38,6 +38,7 @@ export const Navigation = () => {
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-14 sm:h-16 items-center justify-between">
           {/* Logo/Name */}
@@ -54,13 +55,16 @@ export const Navigation = () => {
               <Link
                 key={link.href}
                 href={getLocalizedLink(link.href)}
-                className={`text-xs sm:text-sm font-medium transition-colors ${
+                className={`relative text-xs sm:text-sm font-medium transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] ${
                   isActive(link.href)
                     ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {link.label}
+                {isActive(link.href) && (
+                  <span className="absolute -bottom-[17px] left-0 right-0 h-0.5 bg-foreground animate-scale-in" />
+                )}
               </Link>
             ))}
           </div>
@@ -71,7 +75,7 @@ export const Navigation = () => {
             <button
               type="button"
               onClick={toggleLanguage}
-              className="inline-flex items-center gap-1.5 sm:gap-2 rounded border border-border bg-background px-2 sm:px-3 py-1.5 text-xs font-mono font-medium text-muted-foreground transition-all duration-200 hover:border-foreground hover:text-foreground hover:bg-muted/50 active:scale-95"
+              className="inline-flex items-center gap-1.5 sm:gap-2 rounded border border-border bg-background px-2 sm:px-3 py-1.5 text-xs font-mono font-medium text-muted-foreground transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:text-foreground hover:bg-muted/50 active:scale-95"
               aria-label={t.nav.language}
             >
               <span className="hidden sm:inline">{LANGUAGES[language]}</span>
@@ -84,14 +88,14 @@ export const Navigation = () => {
             <button
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex md:hidden items-center gap-2 rounded border border-border bg-background px-2.5 py-1.5 text-muted-foreground transition-all duration-200 hover:border-foreground hover:text-foreground hover:bg-muted/50 active:scale-95"
+              className="inline-flex md:hidden items-center gap-2 rounded border border-border bg-background px-2.5 py-1.5 text-muted-foreground transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:text-foreground hover:bg-muted/50 active:scale-95"
               aria-label={t.nav.toggleMenu}
               aria-expanded={isMenuOpen}
             >
               {isMenuOpen ? (
-                <X className="h-5 w-5 transition-transform duration-200 rotate-90" />
+                <X className="h-5 w-5 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] rotate-90" />
               ) : (
-                <Menu className="h-5 w-5 transition-transform duration-200" />
+                <Menu className="h-5 w-5 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)]" />
               )}
             </button>
           </div>
@@ -99,7 +103,7 @@ export const Navigation = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="animate-in fade-in slide-in-from-top-2 duration-200 border-t border-border md:hidden">
+          <div className="animate-slide-in-right border-t border-border md:hidden">
             <div className="flex flex-col px-0 py-2">
               {navLinks.map((link, index) => (
                 <Link
@@ -109,7 +113,7 @@ export const Navigation = () => {
                   style={{
                     animationDelay: `${index * 50}ms`,
                   }}
-                  className={`animate-in fade-in slide-in-from-left-4 duration-300 px-4 py-3 text-sm font-medium transition-all ${
+                  className={`animate-fade-in-up px-4 py-3 text-sm font-medium transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] ${
                     isActive(link.href)
                       ? "text-foreground bg-muted/60 border-l-2 border-foreground"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/40"

@@ -1,18 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "../globals.css";
-
+import { notFound } from "next/navigation";
+import { Footer } from "@/components/Footer";
+import { Navigation } from "@/components/Navigation";
 import { LanguageProvider } from "@/lib/LanguageContext";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Pedro Felipe - Backend Engineer & System Architect",
@@ -49,17 +39,17 @@ export default async function RootLayout({
   const { lang } = await params;
 
   // Ensure lang is valid
-  const validLang = lang === "pt" ? "pt" : "en";
+  if (lang !== "pt" && lang !== "en") {
+    notFound();
+  }
+
+  const validLang = lang as "pt" | "en";
 
   return (
-    <html lang={validLang} className="dark">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
-      >
-        <LanguageProvider initialLanguage={validLang}>
-          {children}
-        </LanguageProvider>
-      </body>
-    </html>
+    <LanguageProvider initialLanguage={validLang}>
+      <Navigation />
+      <main className="flex-grow">{children}</main>
+      <Footer />
+    </LanguageProvider>
   );
 }
