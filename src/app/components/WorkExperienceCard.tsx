@@ -59,9 +59,23 @@ export const WorkExperienceCard = ({
 
           {/* Description */}
           {experience.description && (
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {experience.description}
-            </p>
+            <div className="text-sm leading-relaxed text-muted-foreground">
+              {experience.description
+                .split(/\.\s+/)
+                .filter((item) => item.trim())
+                .map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-start gap-2 mb-2 last:mb-0"
+                  >
+                    <span className="text-muted-foreground/60 mt-0.5">•</span>
+                    <span className="flex-1">
+                      {item.trim()}
+                      {item.trim() && !item.endsWith(".") ? "." : ""}
+                    </span>
+                  </div>
+                ))}
+            </div>
           )}
         </div>
       </div>

@@ -30,9 +30,8 @@ export const getWorkExperience = (language: "en" | "pt"): WorkExperience[] => {
         location: "Brasília, Brasil",
         start: "Nov 2025",
         end: "Presente",
-        description: `- Desenvolvimento de APIs RESTful com NestJS, seguindo boas práticas de arquitetura modular e clean architecture
-- Modelagem e manutenção de schemas complexos no PostgreSQL utilizando Prisma ORM
-- Integração com APIs fiscais externas (Nuvem Fiscal e Focus NFe), incluindo autenticação, emissão e acompanhamento de status`,
+        description:
+          "Desenvolvimento de APIs RESTful com NestJS, seguindo boas práticas de arquitetura modular e clean architecture. Modelagem e manutenção de schemas complexos no PostgreSQL utilizando Prisma ORM. Integração com APIs fiscais externas (Nuvem Fiscal e Focus NFe), incluindo autenticação, emissão e acompanhamento de status.",
       },
     ];
   }
@@ -44,9 +43,8 @@ export const getWorkExperience = (language: "en" | "pt"): WorkExperience[] => {
       location: "Brasília, Brazil",
       start: "Nov 2025",
       end: "Present",
-      description: `- Development of RESTful APIs with NestJS, following best practices in modular architecture and clean architecture
-- Modeling and maintenance of complex schemas in PostgreSQL using Prisma ORM
-- Integration with external fiscal APIs (Nuvem Fiscal and Focus NFe), including authentication, issuance and status tracking`,
+      description:
+        "Development of RESTful APIs with NestJS, following best practices in modular architecture and clean architecture. Modeling and maintenance of complex schemas in PostgreSQL using Prisma ORM. Integration with external fiscal APIs (Nuvem Fiscal and Focus NFe), including authentication, issuance and status tracking.",
     },
   ];
 };
