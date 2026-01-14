@@ -30,6 +30,10 @@ export const homeContent = {
     skills: {
       badge: "Expertise",
       title: "Core Technical Skills",
+      backend: "Backend",
+      databases: "Databases",
+      devops: "DevOps & Infrastructure",
+      tools: "Tools & Practices",
     },
 
     // Philosophy Section
@@ -67,6 +71,10 @@ export const homeContent = {
     skills: {
       badge: "Expertise",
       title: "Habilidades Técnicas Principais",
+      backend: "Backend",
+      databases: "Bancos de Dados",
+      devops: "DevOps & Infraestrutura",
+      tools: "Ferramentas & Práticas",
     },
 
     // Philosophy Section

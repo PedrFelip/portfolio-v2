@@ -22,7 +22,7 @@ export const translations = {
     // Page-specific content
     ...homeContent.en,
     ...aboutContent.en,
-    ...blogContent,
+    ...blogContent.en,
     ...linksContent.en,
     ...notFoundContent.en,
   },
@@ -33,7 +33,7 @@ export const translations = {
     // Page-specific content
     ...homeContent.pt,
     ...aboutContent.pt,
-    ...blogContent,
+    ...blogContent.pt,
     ...linksContent.pt,
     ...notFoundContent.pt,
   },
