@@ -1,18 +1,34 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo } from "react";
-import { Hero } from "@/components/Hero";
-import { ProjectCard } from "@/components/ProjectCard";
+import { FeaturedProjectsSection } from "@/components/home/FeaturedProjectsSection";
+import { Hero } from "@/components/home/Hero";
+import { SkillsSection } from "@/components/home/SkillsSection";
+import { HOME_TECH_STACK } from "@/lib/home-config";
 import { useLanguage } from "@/lib/LanguageContext";
 import { getFeaturedProjects } from "@/lib/projects-data";
 import { getHomeSkills } from "@/lib/shared-data";
 import { useLocalizedLink } from "@/lib/useLocalizedLink";
 
+/**
+ * Home page component
+ *
+ * Note: Marked as client component due to:
+ * - useLanguage() hook for translations
+ * - useMemo for derived state based on language changes
+ *
+ * Performance optimizations (Vercel best practices):
+ * - useMemo prevents unnecessary recalculations of projects and skills (rerender-memo)
+ * - Child components are memoized to prevent unnecessary re-renders
+ * - Language-based data fetching is cached per language
+ * - Direct imports used (no barrel files) to optimize bundle size
+ */
 export default function Home() {
   const { t, language } = useLanguage();
   const getLocalizedLink = useLocalizedLink();
 
+  // Memoize projects and skills based on language changes
+  // Prevents recalculating derived state on every render
   const skills = useMemo(
     () => getHomeSkills(language as "en" | "pt"),
     [language],
@@ -26,78 +42,33 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <Hero />
+      <Hero
+        greeting={t.hero.greeting}
+        title={t.hero.title}
+        description={t.hero.description}
+        ctaPrimary={t.hero.cta}
+        ctaSecondary={t.hero.ctaSecondary}
+        primaryHref={getLocalizedLink("/projects")}
+        secondaryHref={getLocalizedLink("/about")}
+        techStack={[...HOME_TECH_STACK]}
+      />
 
       {/* Featured Projects Section */}
-      <section className="border-t border-border bg-muted/30 py-16 sm:py-24 md:py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="mb-8 sm:mb-12">
-            <div className="mb-2 font-mono text-xs uppercase tracking-wider text-muted-foreground">
-              {t.projects.badge}
-            </div>
-            <h2 className="mb-4 text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
-              {t.projects.title}
-            </h2>
-            <p className="max-w-2xl text-sm sm:text-base text-muted-foreground">
-              {t.projects.description}
-            </p>
-          </div>
-
-          {/* Projects Grid */}
-          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {featuredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
-
-          {/* View All Projects Link */}
-          <div className="mt-8 sm:mt-12 text-center">
-            <Link
-              href={getLocalizedLink("/projects")}
-              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {t.projects.viewAll}
-              <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-        </div>
-      </section>
+      <FeaturedProjectsSection
+        projects={featuredProjects}
+        badge={t.projects.badge}
+        title={t.projects.title}
+        description={t.projects.description}
+        viewAllLabel={t.projects.viewAll}
+        viewAllHref={getLocalizedLink("/projects")}
+      />
 
       {/* Skills Section */}
-      <section className="py-16 sm:py-24 md:py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 sm:mb-12">
-            <div className="mb-2 font-mono text-xs uppercase tracking-wider text-muted-foreground">
-              {t.skills.badge}
-            </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
-              {t.skills.title}
-            </h2>
-          </div>
-
-          {/* Skills Grid */}
-          <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
-            {skills.map((skillGroup) => (
-              <div key={skillGroup.category} className="space-y-4">
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                  {skillGroup.category}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {skillGroup.items.map((skill) => (
-                    <span
-                      key={skill}
-                      className="rounded border border-border bg-muted px-3 py-1.5 font-mono text-xs text-muted-foreground"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <SkillsSection
+        skills={skills}
+        badge={t.skills.badge}
+        title={t.skills.title}
+      />
     </div>
   );
 }
