@@ -23,6 +23,14 @@ interface BlogPostPageProps {
   }>;
 }
 
+/**
+ * BlogPostPage component
+ *
+ * Design principles (AGENTS.md):
+ * - 4px grid: consistent spacing throughout
+ * - Symmetrical padding: matching padding on all sides
+ * - Consistent container: matches Navigation and Section components
+ */
 export async function generateStaticParams() {
   const slugs = getAllPostSlugs();
   const langs = ["en", "pt"];
@@ -97,68 +105,70 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
-      {/* Back Link */}
-      <Link
-        href={`/${lang}/blog`}
-        className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground mb-8"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        {t.back}
-      </Link>
-
-      {/* Post Header */}
-      <header className="mb-8 sm:mb-12">
-        <h1 className="mb-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground">
-          {post.title}
-        </h1>
-
-        {/* Meta Information */}
-        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground border-b border-border pb-6">
-          <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" />
-            <time dateTime={post.date}>{formattedDate}</time>
-          </div>
-        </div>
-
-        {/* Tags */}
-        {post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-6">
-            {post.tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded border border-border bg-muted px-3 py-1 font-mono text-xs text-muted-foreground"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
-      </header>
-
-      {/* Post Content */}
-      <article className="prose max-w-none">
-        <MDXRemote
-          source={post.content}
-          options={{
-            mdxOptions: {
-              rehypePlugins: [[rehypeHighlight, { detect: true }]],
-            },
-          }}
-          components={components}
-        />
-      </article>
-
-      {/* Footer */}
-      <footer className="mt-24 pt-12 border-t border-border">
+    <section className="py-12 sm:py-16 lg:py-24">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        {/* Back Link */}
         <Link
           href={`/${lang}/blog`}
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-foreground mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
           {t.back}
         </Link>
-      </footer>
-    </div>
+
+        {/* Post Header */}
+        <header className="mb-8 sm:mb-12">
+          <h1 className="mb-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground">
+            {post.title}
+          </h1>
+
+          {/* Meta Information */}
+          <div className="flex flex-wrap items-center gap-4 text-sm font-mono text-muted-foreground border-b border-border pb-6">
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              <time dateTime={post.date}>{formattedDate}</time>
+            </div>
+          </div>
+
+          {/* Tags */}
+          {post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-6">
+              {post.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded border border-border bg-muted px-3 py-1 font-mono text-xs text-muted-foreground"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </header>
+
+        {/* Post Content */}
+        <article className="prose max-w-none">
+          <MDXRemote
+            source={post.content}
+            options={{
+              mdxOptions: {
+                rehypePlugins: [[rehypeHighlight, { detect: true }]],
+              },
+            }}
+            components={components}
+          />
+        </article>
+
+        {/* Footer */}
+        <footer className="mt-24 pt-12 border-t border-border">
+          <Link
+            href={`/${lang}/blog`}
+            className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {t.back}
+          </Link>
+        </footer>
+      </div>
+    </section>
   );
 }
