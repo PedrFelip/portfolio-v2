@@ -13,7 +13,7 @@ export default function LinksLayout({
   return (
     <div className="min-h-screen bg-background">
       <main className="flex min-h-screen items-center justify-center">
-        <div className="w-full max-w-sm sm:max-w-md px-4">{children}</div>
+        <div className="w-full max-w-sm sm:max-w-md">{children}</div>
       </main>
     </div>
   );
