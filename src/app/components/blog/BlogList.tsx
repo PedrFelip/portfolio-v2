@@ -76,7 +76,7 @@ export function BlogList({
             type="button"
             onClick={handlePrevPage}
             disabled={!hasPrevPage}
-            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-card"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-card"
           >
             <ChevronLeft className="h-4 w-4" />
             {translations.previous}
@@ -90,7 +90,7 @@ export function BlogList({
             type="button"
             onClick={handleNextPage}
             disabled={!hasNextPage}
-            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-card"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-card"
           >
             {translations.next}
             <ChevronRight className="h-4 w-4" />
