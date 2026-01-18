@@ -47,7 +47,8 @@ export function MDXTableRow({ children, isHeader }: TableRowProps) {
     <tr
       className={cn(
         "border-b border-border",
-        !isHeader && "hover:bg-muted/30 transition-colors",
+        !isHeader &&
+          "hover:bg-muted/30 transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)]",
       )}
     >
       {children}
