@@ -19,7 +19,7 @@ export const SkillsGrid = ({ skills }: SkillsGridProps) => {
             {skillGroup.items.map((skill) => (
               <span
                 key={skill}
-                className="rounded border border-border bg-muted px-2.5 sm:px-3 py-1 sm:py-1.5 font-mono text-xs text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+                className="rounded border border-border bg-muted px-2.5 sm:px-3 py-1 sm:py-1.5 font-mono text-xs text-muted-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:text-foreground"
               >
                 {skill}
               </span>

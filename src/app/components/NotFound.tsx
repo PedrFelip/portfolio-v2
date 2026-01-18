@@ -7,6 +7,14 @@ import { Navigation } from "@/components/layout/Navigation";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useLocalizedLink } from "@/lib/useLocalizedLink";
 
+/**
+ * NotFound component
+ *
+ * Design principles (AGENTS.md):
+ * - 4px grid: consistent spacing throughout
+ * - Symmetrical padding: matching padding on all sides
+ * - Consistent container: matches Navigation and Section components
+ */
 export function NotFound() {
   const { t } = useLanguage();
   const getLocalizedLink = useLocalizedLink();
@@ -16,9 +24,9 @@ export function NotFound() {
       <Navigation />
 
       {/* Main content */}
-      <main className="flex-1 py-16 sm:py-24 md:py-32">
+      <main className="flex-1 py-16 sm:py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl space-y-8 animate-fade-in-up">
+          <div className="mx-auto max-w-2xl space-y-8 animate-in-up">
             {/* Error code and title */}
             <div className="space-y-4">
               <div className="font-mono text-xs sm:text-sm text-muted-foreground tracking-widest uppercase">
