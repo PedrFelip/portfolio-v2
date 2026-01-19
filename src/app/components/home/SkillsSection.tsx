@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { Section } from "@/components/common/Section";
 import { SectionHeader } from "@/components/common/SectionHeader";
+import { H3 } from "@/components/ui";
 import type { SkillCategory } from "@/types/portfolio";
 
 interface SkillsSectionProps {
@@ -43,9 +44,7 @@ interface SkillCategoryGroupProps extends SkillCategory {}
 const SkillCategoryGroup = memo(
   ({ category, items }: SkillCategoryGroupProps) => (
     <div className="space-y-3 sm:space-y-4">
-      <h3 className="text-base font-semibold text-foreground sm:text-lg">
-        {category}
-      </h3>
+      <H3>{category}</H3>
       <div className="flex flex-wrap gap-2">
         {items.map((skill) => (
           <SkillItem key={skill} skill={skill} />
