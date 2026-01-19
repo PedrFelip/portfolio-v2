@@ -37,6 +37,9 @@ export const sharedContent = {
       year: new Date().getFullYear(),
       madeWith: "Made with",
       by: "by",
+      navigation: "Navigation",
+      connect: "Connect",
+      builtWith: "Built with Next.js, Tailwind CSS & Bun",
     },
 
     // Header
@@ -76,6 +79,9 @@ export const sharedContent = {
       year: new Date().getFullYear(),
       madeWith: "Feito com",
       by: "por",
+      navigation: "Navegacao",
+      connect: "Conecte-se",
+      builtWith: "Feito com Next.js, Tailwind CSS & Bun",
     },
 
     // Header
