@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Footer } from "@/components/layout/Footer";
 import { Navigation } from "@/components/layout/Navigation";
+import { H1, Label, P } from "@/components/ui";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useLocalizedLink } from "@/lib/useLocalizedLink";
 
@@ -29,27 +30,23 @@ export function NotFound() {
           <div className="mx-auto max-w-2xl space-y-8 animate-in-up">
             {/* Error code and title */}
             <div className="space-y-4">
-              <div className="font-mono text-xs sm:text-sm text-muted-foreground tracking-widest uppercase">
-                {t.notFound.errorCode}
-              </div>
-              <h1 className="text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight text-foreground leading-tight">
+              <Label className="uppercase">{t.notFound.errorCode}</Label>
+              <H1 className="text-5xl sm:text-6xl md:text-7xl leading-tight">
                 {t.notFound.title}
-              </h1>
+              </H1>
             </div>
 
             {/* Description */}
-            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-              {t.notFound.description}
-            </p>
+            <P className="text-muted-foreground">{t.notFound.description}</P>
 
             {/* Divider */}
             <div className="border-t border-border" />
 
             {/* Navigation menu */}
             <div className="space-y-3">
-              <p className="font-mono text-xs text-muted-foreground/70 uppercase tracking-wide">
+              <Label className="text-muted-foreground/70 uppercase">
                 {t.notFound.quickNav}
-              </p>
+              </Label>
               <div className="grid gap-2">
                 {[
                   { label: t.nav.home, href: "/" },

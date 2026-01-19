@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { FilterTags } from "@/components/projects/FilterTags";
 import { ProjectCard } from "@/components/projects/ProjectCard";
+import { P } from "@/components/ui";
 import type { Project } from "@/types/portfolio";
 
 interface ProjectsClientProps {
@@ -57,7 +58,7 @@ export default function ProjectsClient({
 
       {filteredProjects.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-sm text-muted-foreground">{emptyStateLabel}</p>
+          <P className="text-muted-foreground">{emptyStateLabel}</P>
         </div>
       ) : null}
     </>
