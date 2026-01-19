@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { memo } from "react";
+import { Badge, Button, H1, P } from "@/components/ui";
 
 interface HeroProps {
   greeting: string;
@@ -18,6 +19,8 @@ interface HeroProps {
  *
  * Memoized to prevent re-renders when techStack array changes reference
  * (Vercel: rerender-memo - Extract expensive work into memoized components)
+ *
+ * Refactored to use shadcn/ui Badge component with custom animation styles
  */
 interface TechBadgeProps {
   tech: string;
@@ -25,12 +28,12 @@ interface TechBadgeProps {
 }
 
 const TechBadge = memo(({ tech, index }: TechBadgeProps) => (
-  <span
-    className="rounded border border-border bg-muted px-2 py-1 font-mono text-xs text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted/80"
+  <Badge
+    className="transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted/80"
     style={{ animationDelay: `${index * 50}ms` }}
   >
     {tech}
-  </span>
+  </Badge>
 ));
 
 TechBadge.displayName = "TechBadge";
@@ -54,6 +57,7 @@ TechBadge.displayName = "TechBadge";
  * - Child components (TechBadge) are memoized separately
  * - displayName for DevTools debugging
  * - Proper TypeScript interfaces for all props
+ * - Uses shadcn/ui components: H1, P, Badge, Button
  */
 export const Hero = memo(
   ({
@@ -75,31 +79,25 @@ export const Hero = memo(
           </div>
 
           {/* Main Title */}
-          <h1 className="mb-4 text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl animate-in-up animate-delay-100">
-            {title}
-          </h1>
+          <H1 className="mb-4 animate-in-up animate-delay-100">{title}</H1>
 
           {/* Subtitle/Description */}
-          <p className="mb-6 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:mb-8 sm:text-base md:text-lg animate-in-up animate-delay-150">
+          <P className="mb-6 max-w-2xl sm:mb-8 animate-in-up animate-delay-150">
             {description}
-          </p>
+          </P>
 
           {/* CTAs */}
           <div className="mb-8 flex flex-col gap-3 sm:mb-10 sm:flex-row sm:gap-4 animate-in-up animate-delay-200">
-            <Link
-              href={primaryHref}
-              className="group inline-flex items-center justify-center gap-2 rounded border border-foreground bg-foreground px-4 py-2.5 text-xs font-medium text-background transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:bg-background hover:text-foreground sm:px-6 sm:py-3 sm:text-sm"
-            >
-              {ctaPrimary}
-              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:translate-x-0.5 sm:h-4 sm:w-4" />
-            </Link>
+            <Button asChild size="lg">
+              <Link href={primaryHref} className="group">
+                {ctaPrimary}
+                <ArrowRight className="ml-2 h-3.5 w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:translate-x-0.5 sm:h-4 sm:w-4" />
+              </Link>
+            </Button>
 
-            <Link
-              href={secondaryHref}
-              className="inline-flex items-center justify-center gap-2 rounded border border-border bg-background px-4 py-2.5 text-xs font-medium text-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted sm:px-6 sm:py-3 sm:text-sm"
-            >
-              {ctaSecondary}
-            </Link>
+            <Button asChild variant="outline" size="lg">
+              <Link href={secondaryHref}>{ctaSecondary}</Link>
+            </Button>
           </div>
 
           {/* Tech Stack Badge */}

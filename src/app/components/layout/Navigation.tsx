@@ -87,7 +87,7 @@ export const Navigation = memo(() => {
               <Link
                 key={link.href}
                 href={getLocalizedLink(link.href)}
-                className={`relative font-mono text-xs font-medium transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                className={`relative font-mono text-xs font-medium transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] ${
                   isActive(link.href)
                     ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground"
@@ -95,7 +95,7 @@ export const Navigation = memo(() => {
               >
                 {link.label}
                 {isActive(link.href) ? (
-                  <span className="absolute -bottom-3 left-0 right-0 h-[1px] bg-foreground sm:-bottom-4" />
+                  <span className="absolute -bottom-[18px] left-0 right-0 h-0.5 bg-accent sm:-bottom-[22px]" />
                 ) : null}
               </Link>
             ))}
@@ -137,9 +137,9 @@ export const Navigation = memo(() => {
                   key={link.href}
                   href={getLocalizedLink(link.href)}
                   onClick={closeMenu}
-                  className={`px-4 py-3 font-mono text-xs font-medium transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                  className={`px-4 py-3 font-mono text-xs font-medium transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] ${
                     isActive(link.href)
-                      ? "text-foreground bg-muted/60 border-l-2 border-foreground"
+                      ? "text-foreground bg-muted/60 border-l-2 border-accent"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
                   }`}
                 >
