@@ -46,7 +46,12 @@ bun test src/mytest.test.ts  # Run single test file
 
 ### File Organization
 - **API Routes**: `app/api/**/*.ts` - Use dynamic routes with proper HTTP methods
-- **Components**: `app/components/**/*.tsx` - React components (use shadcn/ui where applicable)
+- **Components**: `app/components/**/*.tsx` - React components organized by feature
+  - `ui/` - shadcn/ui primitives (Button, Card, Input, Badge) + Typography system
+  - `layout/` - Header, Footer, Navigation
+  - `common/` - Section, SectionHeader, shared components
+  - `home/`, `projects/`, `blog/`, `about/` - Feature-specific components
+  - `mdx/` - MDX/Markdown rendering components
 - **Lib**: `app/lib/**/*.ts` - Utility functions, helpers
 - **Types**: `app/types/**/*.ts` - TypeScript interfaces and types
 - **Tests**: `**/*.test.ts` or `**/*.spec.ts` - Co-locate with source files
@@ -167,6 +172,58 @@ export const Counter = () => {
 
 // ❌ Avoid prop drilling - use context for deeply nested state
 ```
+
+### UI Components (shadcn/ui)
+
+This project uses **shadcn/ui** as the UI component library. All components follow AGENTS.md design principles:
+
+**Installed Components** (`components/ui/`):
+- `Button` - Primary UI actions with variants (default, outline, ghost, link)
+- `Card` - Content containers with Header, Footer, Content sub-components
+- `Input` - Form input fields
+- `Badge` - Status indicators and tags
+- `Separator` - Visual dividers
+- `Typography` - Custom typography system (H1-H4, P, Label, Code, MonoText, etc)
+- `ButtonLink` - Next.js Link styled as Button using asChild pattern
+
+**Usage Patterns**:
+```typescript
+// ✅ Import from barrel export
+import { Button, Card, H1, P } from '@/components/ui'
+
+// ✅ Use asChild pattern for Links
+<Button asChild variant="outline">
+  <Link href="/projects">View Projects</Link>
+</Button>
+
+// ✅ Leverage Card sub-components
+<Card>
+  <CardHeader>
+    <CardTitle>Project Title</CardTitle>
+    <CardDescription>Brief description</CardDescription>
+  </CardHeader>
+  <CardContent>Content here</CardContent>
+  <CardFooter>Footer actions</CardFooter>
+</Card>
+
+// ✅ Use Typography components
+<H1>Page Title</H1>
+<P>Body text content</P>
+<MonoText>2024-01-15</MonoText>
+```
+
+**Adding New Components**:
+```bash
+bunx shadcn@latest add [component-name]
+```
+
+**Component Guidelines**:
+- Always use `cn()` helper for className merging
+- Memoize components with `memo()` and set `displayName`
+- Follow borders-only depth strategy (minimal shadows)
+- Use CSS variables for colors (`bg-background`, `text-foreground`, etc)
+- Maintain 4px grid spacing (`p-4`, `gap-2`, etc)
+- Use cubic-bezier easing: `ease-[cubic-bezier(0.25,1,0.5,1)]`
 
 ---
 
