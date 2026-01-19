@@ -2,6 +2,7 @@
 
 import { ExternalLink } from "lucide-react";
 import { memo } from "react";
+import { H3, MonoText } from "@/components/ui";
 import type { WorkExperience } from "@/types/portfolio";
 
 interface WorkExperienceCardProps {
@@ -41,12 +42,10 @@ export const WorkExperienceCard = memo(
             {/* Header */}
             <div className="mb-3 sm:mb-4">
               <div className="mb-2 flex flex-wrap items-start justify-between gap-2">
-                <h3 className="text-base font-semibold text-foreground sm:text-lg">
-                  {experience.title}
-                </h3>
-                <span className="whitespace-nowrap font-mono text-xs text-muted-foreground tabular-nums">
+                <H3>{experience.title}</H3>
+                <MonoText className="whitespace-nowrap">
                   {experience.start} → {experience.end}
-                </span>
+                </MonoText>
               </div>
 
               <div className="flex flex-wrap items-center gap-2">

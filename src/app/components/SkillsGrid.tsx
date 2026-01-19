@@ -1,3 +1,5 @@
+import { H3 } from "@/components/ui";
+
 interface SkillCategory {
   category: string;
   items: string[];
@@ -12,9 +14,7 @@ export const SkillsGrid = ({ skills }: SkillsGridProps) => {
     <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
       {skills.map((skillGroup) => (
         <div key={skillGroup.category} className="space-y-4">
-          <h3 className="text-base sm:text-lg font-semibold text-foreground">
-            {skillGroup.category}
-          </h3>
+          <H3>{skillGroup.category}</H3>
           <div className="flex flex-wrap gap-2">
             {skillGroup.items.map((skill) => (
               <span
