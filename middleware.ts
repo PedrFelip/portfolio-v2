@@ -6,11 +6,12 @@ const DEFAULT_LANGUAGE = "en";
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // Skip middleware for api, _next, public files
+  // Skip middleware for api, _next, public files, and links page
   if (
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
-    pathname.includes(".")
+    pathname.includes(".") ||
+    pathname.startsWith("/links")
   ) {
     return NextResponse.next();
   }
