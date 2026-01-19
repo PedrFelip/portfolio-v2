@@ -1,5 +1,6 @@
 "use client";
 
+import { MonoText } from "@/components/ui";
 import { useLanguage } from "@/lib/LanguageContext";
 
 interface FilterTagsProps {
@@ -30,11 +31,11 @@ export function FilterTags({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <p className="text-xs sm:text-sm font-mono text-muted-foreground">
+        <MonoText className="text-muted-foreground">
           {selectedTags.length > 0
             ? filterLabels.active(selectedTags.length)
             : filterLabels.empty}
-        </p>
+        </MonoText>
         {selectedTags.length > 0 && (
           <button
             type="button"

@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { H3 } from "@/components/ui";
 
 interface TechStackItem {
   name: string;
@@ -24,9 +25,7 @@ TechBadge.displayName = "TechBadge";
 export const TechStackGrid = memo(({ items, title }: TechStackGridProps) => {
   return (
     <div className="space-y-4">
-      {title && (
-        <h3 className="text-lg font-semibold text-foreground">{title}</h3>
-      )}
+      {title && <H3>{title}</H3>}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
         {items.map((item, index) => (
           <TechBadge key={`${item.name}-${index}`} {...item} />

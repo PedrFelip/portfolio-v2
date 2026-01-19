@@ -3,48 +3,23 @@
 import { ExternalLink, Github } from "lucide-react";
 import Link from "next/link";
 import { memo } from "react";
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  H3,
+  MonoText,
+  P,
+} from "@/components/ui";
 import { useLanguage } from "@/lib/LanguageContext";
 import type { Project } from "@/types/portfolio";
 
 interface ProjectCardProps {
   project: Project;
 }
-
-interface ProjectLinkProps {
-  href: string;
-  label: string;
-  icon: React.ReactNode;
-}
-
-/**
- * ProjectLink component
- *
- * Design principles (AGENTS.md):
- * - Isolated Controls: crafted UI element, not plain text
- * - 4px grid: consistent spacing and padding
- * - Symmetrical padding: px-3 py-1.5 matching all sides
- * - Borders-only approach: subtle borders, no heavy shadows
- * - Typography: monospace for labels
- * - Animation: 150ms with cubic-bezier easing
- * - Mobile-first: optimized for touch targets
- *
- * Memoized to prevent re-renders
- */
-const ProjectLink = memo(({ href, label, icon }: ProjectLinkProps) => (
-  <Link
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="group inline-flex items-center gap-2 rounded border border-border bg-background px-3 py-1.5 font-mono text-xs text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground/70 hover:text-foreground hover:bg-muted/50 active:scale-95"
-  >
-    <span className="transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-110">
-      {icon}
-    </span>
-    <span>{label}</span>
-  </Link>
-));
-
-ProjectLink.displayName = "ProjectLink";
 
 /**
  * ProjectCard component
@@ -62,8 +37,8 @@ ProjectLink.displayName = "ProjectLink";
  * - Memoized to prevent re-renders when project prop doesn't change
  * - Flex column layout to push links to bottom consistently
  * - Separates concerns: header, description, tech list, links
- * - Uses Fragment for conditional rendering (Vercel: rendering-conditional-render)
- * - Child component (ProjectLink) handles its own memoization
+ * - Uses shadcn/ui components: Card, H3, P, MonoText, Badge, Button
+ * - Removed custom ProjectLink component in favor of Button asChild pattern
  */
 export const ProjectCard = memo(({ project }: ProjectCardProps) => {
   const { t } = useLanguage();
@@ -73,68 +48,84 @@ export const ProjectCard = memo(({ project }: ProjectCardProps) => {
   const remainingTechs = techCount > 6 ? techCount - 6 : 0;
 
   return (
-    <article className="group flex h-full flex-col rounded-lg border border-border bg-card p-4 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:shadow-sm hover:-translate-y-0.5 sm:p-6">
+    <Card className="group flex h-full flex-col">
       {/* Header: Title + Dates */}
-      <div className="mb-3 flex flex-col gap-1.5 sm:mb-4 sm:flex-row sm:items-start sm:justify-between">
-        <h3 className="text-base font-semibold text-foreground pr-2 transition-colors duration-150 sm:text-lg">
-          {project.title}
-        </h3>
-        {project.dates && (
-          <span className="whitespace-nowrap tabular-nums font-mono text-xs text-muted-foreground">
-            {project.dates}
-          </span>
-        )}
-      </div>
+      <CardHeader>
+        <div className="flex flex-col gap-1.5 sm:flex-row sm:items-start sm:justify-between">
+          <H3 className="pr-2 transition-colors duration-150">
+            {project.title}
+          </H3>
+          {project.dates && (
+            <MonoText className="whitespace-nowrap tabular-nums">
+              {project.dates}
+            </MonoText>
+          )}
+        </div>
+      </CardHeader>
 
       {/* Description */}
-      <p className="mb-3 flex-grow text-sm leading-relaxed text-muted-foreground sm:mb-4">
-        {project.description}
-      </p>
+      <CardContent className="flex-grow">
+        <P className="leading-relaxed">{project.description}</P>
 
-      {/* Technologies */}
-      <div className="mb-3 flex flex-wrap gap-2 sm:mb-4">
-        {displayedTechs.map((tech) => (
-          <span
-            key={tech}
-            className="rounded border border-border bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted/80"
-          >
-            {tech}
-          </span>
-        ))}
-        {remainingTechs > 0 && (
-          <span className="rounded border border-border bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground">
-            +{remainingTechs}
-          </span>
-        )}
-      </div>
+        {/* Technologies */}
+        <div className="mt-3 flex flex-wrap gap-2 sm:mt-4">
+          {displayedTechs.map((tech) => (
+            <Badge
+              key={tech}
+              className="transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted/80"
+            >
+              {tech}
+            </Badge>
+          ))}
+          {remainingTechs > 0 && <Badge>+{remainingTechs}</Badge>}
+        </div>
+      </CardContent>
 
       {/* Links - always pushed to bottom */}
       {project.links && (
-        <div className="mt-auto flex flex-wrap gap-2 pt-2">
+        <CardFooter className="flex flex-wrap gap-2">
           {project.links.github && (
-            <ProjectLink
-              href={project.links.github}
-              label={linkLabels.code}
-              icon={<Github className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
-            />
+            <Button asChild variant="outline" size="sm">
+              <Link
+                href={project.links.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/link"
+              >
+                <Github className="mr-2 h-3.5 w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover/link:scale-110 sm:h-4 sm:w-4" />
+                {linkLabels.code}
+              </Link>
+            </Button>
           )}
           {project.links.demo && (
-            <ProjectLink
-              href={project.links.demo}
-              label={linkLabels.demo}
-              icon={<ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
-            />
+            <Button asChild variant="outline" size="sm">
+              <Link
+                href={project.links.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/link"
+              >
+                <ExternalLink className="mr-2 h-3.5 w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover/link:scale-110 sm:h-4 sm:w-4" />
+                {linkLabels.demo}
+              </Link>
+            </Button>
           )}
           {project.links.website && (
-            <ProjectLink
-              href={project.links.website}
-              label={linkLabels.website}
-              icon={<ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
-            />
+            <Button asChild variant="outline" size="sm">
+              <Link
+                href={project.links.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/link"
+              >
+                <ExternalLink className="mr-2 h-3.5 w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover/link:scale-110 sm:h-4 sm:w-4" />
+                {linkLabels.website}
+              </Link>
+            </Button>
           )}
-        </div>
+        </CardFooter>
       )}
-    </article>
+    </Card>
   );
 });
 
