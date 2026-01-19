@@ -3,6 +3,16 @@
 import { Calendar } from "lucide-react";
 import Link from "next/link";
 import { memo } from "react";
+import {
+  Badge,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  H3,
+  MonoText,
+  P,
+} from "@/components/ui";
 import { useLanguage } from "@/lib/LanguageContext";
 import type { BlogMetadata } from "@/types/portfolio";
 
@@ -26,6 +36,7 @@ interface BlogCardProps {
  * - Memoized to prevent re-renders when post prop doesn't change
  * - Flex column layout with flex-grow to push links to bottom
  * - Clean component composition
+ * - Uses shadcn/ui components: Card, H3, P, MonoText, Badge
  */
 export const BlogCard = memo(({ post }: BlogCardProps) => {
   const { t, language } = useLanguage();
@@ -41,45 +52,44 @@ export const BlogCard = memo(({ post }: BlogCardProps) => {
   );
 
   return (
-    <article className="group flex h-full flex-col rounded-lg border border-border bg-card p-4 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:shadow-sm hover:-translate-y-0.5 sm:p-6">
+    <Card className="group flex h-full flex-col">
       {/* Header */}
-      <div className="mb-3">
+      <CardHeader>
         <Link
           href={`/${language}/blog/${post.slug}`}
           className="block hover:opacity-80 transition-opacity duration-150"
         >
-          <h3 className="text-base font-semibold text-foreground mb-2 line-clamp-2 sm:text-lg">
-            {post.title}
-          </h3>
+          <H3 className="mb-2 line-clamp-2">{post.title}</H3>
         </Link>
 
-        <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground tabular-nums">
+        <div className="flex items-center gap-1.5 tabular-nums">
           <Calendar className="h-3.5 w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-110" />
-          <time dateTime={post.date}>{formattedDate}</time>
+          <MonoText>
+            <time dateTime={post.date}>{formattedDate}</time>
+          </MonoText>
         </div>
-      </div>
+      </CardHeader>
 
-      {/* Excerpt */}
-      <p className="mb-3 flex-grow text-sm leading-relaxed text-muted-foreground line-clamp-3 sm:mb-4">
-        {post.excerpt}
-      </p>
+      {/* Content: Excerpt + Tags */}
+      <CardContent className="flex-grow space-y-4">
+        <P className="leading-relaxed line-clamp-3">{post.excerpt}</P>
 
-      {/* Tags */}
-      {post.tags.length > 0 && (
-        <div className="mb-4 flex flex-wrap gap-2">
-          {post.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded border border-border bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted/80"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
+        {post.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {post.tags.map((tag) => (
+              <Badge
+                key={tag}
+                className="transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted/80"
+              >
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        )}
+      </CardContent>
 
       {/* Read More Link - always pushed to bottom */}
-      <div className="mt-auto pt-2">
+      <CardFooter>
         <Link
           href={`/${language}/blog/${post.slug}`}
           className="inline-flex items-center text-sm font-medium text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-foreground"
@@ -89,8 +99,8 @@ export const BlogCard = memo(({ post }: BlogCardProps) => {
             →
           </span>
         </Link>
-      </div>
-    </article>
+      </CardFooter>
+    </Card>
   );
 });
 
