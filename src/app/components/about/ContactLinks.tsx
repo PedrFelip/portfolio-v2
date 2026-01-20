@@ -1,11 +1,14 @@
 "use client";
 
 import { Github, Linkedin, Mail } from "lucide-react";
+import { memo } from "react";
+import { Label, MonoText } from "@/components/ui";
+import { X } from "@/components/ui/x-icon";
 
 interface ContactLink {
   label: string;
   url: string;
-  icon: "github" | "linkedin" | "email";
+  icon: "github" | "linkedin" | "x" | "email";
 }
 
 interface ContactLinksProps {
@@ -15,12 +18,28 @@ interface ContactLinksProps {
 const iconMap = {
   github: Github,
   linkedin: Linkedin,
+  x: X,
   email: Mail,
 };
 
-export const ContactLinks = ({ links }: ContactLinksProps) => {
+/**
+ * ContactLinks component
+ *
+ * Design principles (AGENTS.md):
+ * - 4px grid: consistent spacing (gap-2, gap-4, p-4)
+ * - Symmetrical padding: matching padding on all sides
+ * - Borders-only approach: subtle borders with hover effects
+ * - Typography: Label for names, MonoText for URLs
+ * - Animation: 150ms with cubic-bezier easing
+ *
+ * Best practices applied:
+ * - Memoized to prevent re-renders
+ * - Uses typography system (Label, MonoText)
+ * - Accessible with proper aria-labels
+ */
+export const ContactLinks = memo(({ links }: ContactLinksProps) => {
   return (
-    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-3 grid-cols-1 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {links.map((link) => {
         const Icon = iconMap[link.icon];
         const isEmail = link.icon === "email";
@@ -32,24 +51,26 @@ export const ContactLinks = ({ links }: ContactLinksProps) => {
             href={href}
             target={isEmail ? undefined : "_blank"}
             rel={isEmail ? undefined : "noopener noreferrer"}
-            className="flex flex-col gap-2 rounded-lg border border-border bg-card px-4 py-4 transition-[border-color,background-color] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted group motion-reduce:transition-none"
+            className="group flex flex-col gap-2 rounded-lg border border-border bg-card p-3 sm:p-4 transition-[border-color,background-color] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted motion-reduce:transition-none"
             aria-label={`${link.label}: ${link.url}`}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-start sm:items-center gap-2 min-w-0">
               <Icon
-                className="h-5 w-5 flex-shrink-0 text-muted-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:text-foreground"
+                className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 text-muted-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:text-foreground"
                 aria-hidden="true"
               />
-              <span className="text-sm font-mono font-semibold text-foreground uppercase tracking-wide">
+              <Label className="text-xs uppercase tracking-wider text-foreground break-words">
                 {link.label}
-              </span>
+              </Label>
             </div>
-            <span className="text-xs text-muted-foreground break-all">
+            <MonoText className="break-words text-xs text-muted-foreground">
               {link.url}
-            </span>
+            </MonoText>
           </a>
         );
       })}
     </div>
   );
-};
+});
+
+ContactLinks.displayName = "ContactLinks";
