@@ -74,9 +74,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       if (className?.startsWith("hljs")) {
         return <code className={className}>{children}</code>;
       }
-      // Inline code styling
+      // Inline code styling (4px grid: px-1.5 = 6px, py-0.5 = 2px)
       return (
-        <code className="font-mono text-xs sm:text-sm bg-muted px-2 py-1 rounded border border-border text-foreground">
+        <code className="font-mono text-xs sm:text-sm bg-muted px-1.5 py-0.5 rounded border border-border text-foreground">
           {children}
         </code>
       );
@@ -102,14 +102,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   };
 
   return (
-    <section className="py-12 sm:py-16 lg:py-24">
+    <section className="py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         {/* Back Link */}
         <Link
           href={`/${lang}/blog`}
           className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-foreground mb-8"
+          aria-label={`${t.back} - ${t.title}`}
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           {t.back}
         </Link>
 
@@ -118,16 +119,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <H1 className="mb-4">{post.title}</H1>
 
           {/* Meta Information */}
-          <div className="flex flex-wrap items-center gap-4 text-sm font-mono text-muted-foreground border-b border-border pb-6">
+          <div className="flex flex-wrap items-center gap-4 text-sm font-mono text-muted-foreground border-b border-border pb-4">
             <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
+              <Calendar className="h-4 w-4" aria-hidden="true" />
               <time dateTime={post.date}>{formattedDate}</time>
             </div>
           </div>
 
           {/* Tags */}
           {post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-6">
+            <div className="flex flex-wrap gap-2 mt-4">
               {post.tags.map((tag) => (
                 <Badge key={tag}>{tag}</Badge>
               ))}
@@ -149,12 +150,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </article>
 
         {/* Footer */}
-        <footer className="mt-24 pt-12 border-t border-border">
+        <footer className="mt-24 pt-8 border-t border-border">
           <Link
             href={`/${lang}/blog`}
             className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-foreground"
+            aria-label={`${t.back} - ${t.title}`}
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             {t.back}
           </Link>
         </footer>

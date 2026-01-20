@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import { cache } from "react";
 import type { BlogMetadata, BlogPost } from "@/types/portfolio";
 
 const BLOG_DIR = path.join(process.cwd(), "src/app/content/blog");
@@ -22,8 +23,9 @@ export function getAllPostSlugs(): string[] {
 
 /**
  * Get blog post metadata by slug
+ * Using React.cache() for per-request deduplication (server-cache-react)
  */
-export function getPostBySlug(slug: string): BlogPost | null {
+export const getPostBySlug = cache((slug: string): BlogPost | null => {
   try {
     const filePath = path.join(BLOG_DIR, `${slug}.md`);
     const mdxFilePath = path.join(BLOG_DIR, `${slug}.mdx`);
@@ -52,12 +54,13 @@ export function getPostBySlug(slug: string): BlogPost | null {
     console.error(`Error reading post ${slug}:`, error);
     return null;
   }
-}
+});
 
 /**
  * Get all blog posts metadata (sorted by date, newest first)
+ * Using React.cache() for per-request deduplication (server-cache-react)
  */
-export function getAllPosts(): BlogMetadata[] {
+export const getAllPosts = cache((): BlogMetadata[] => {
   const slugs = getAllPostSlugs();
 
   const posts = slugs
@@ -76,7 +79,7 @@ export function getAllPosts(): BlogMetadata[] {
     });
 
   return posts;
-}
+});
 
 /**
  * Get paginated blog posts
