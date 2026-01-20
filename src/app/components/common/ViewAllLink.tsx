@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 interface ViewAllLinkProps {
@@ -12,6 +13,7 @@ interface ViewAllLinkProps {
  * Design principles (AGENTS.md):
  * - 4px grid: consistent spacing throughout
  * - Typography hierarchy: proper sizing and spacing
+ * - Uses ArrowRight icon for consistency
  *
  * Spacing scale:
  * - mt-8 on mobile (32px) - matches SectionHeader spacing
@@ -27,10 +29,13 @@ export const ViewAllLink = ({
     <div className={`mt-12 text-center ${className}`}>
       <Link
         href={href}
-        className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-foreground"
+        className="group inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-foreground"
       >
         {label}
-        <span aria-hidden="true">→</span>
+        <ArrowRight
+          className="h-3.5 w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:translate-x-0.5"
+          aria-hidden="true"
+        />
       </Link>
     </div>
   );

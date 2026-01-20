@@ -57,9 +57,12 @@ export function NotFound() {
                   <Link
                     key={link.href}
                     href={getLocalizedLink(link.href)}
-                    className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors duration-150"
+                    className="group inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors duration-150 hover:text-foreground"
                   >
-                    <span className="w-4 text-accent/70">→</span>
+                    <ArrowRight
+                      className="h-3.5 w-3.5 text-accent/70 transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:translate-x-0.5"
+                      aria-hidden="true"
+                    />
                     <span>{link.label}</span>
                   </Link>
                 ))}
