@@ -4,6 +4,7 @@ import { Github, Linkedin, Mail } from "lucide-react";
 import Link from "next/link";
 import { memo } from "react";
 import { Label, MonoText } from "@/components/ui";
+import { X } from "@/components/ui/x-icon";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useLocalizedLink } from "@/lib/useLocalizedLink";
 
@@ -90,6 +91,11 @@ export const Footer = memo(() => {
       icon: <Linkedin className="h-4 w-4" />,
     },
     {
+      href: "https://x.com/pedrofelipeek",
+      label: "X",
+      icon: <X className="h-4 w-4" />,
+    },
+    {
       href: "mailto:pfsilva190406@gmail.com",
       label: "Email",
       icon: <Mail className="h-4 w-4" />,
@@ -97,11 +103,11 @@ export const Footer = memo(() => {
   ];
 
   return (
-    <footer className="border-t border-border bg-card py-8 sm:py-12">
+    <footer className="border-t border-border bg-card py-6 sm:py-8 lg:py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Brand */}
+        <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Brand - Full width on mobile, 1 col on sm, 1 col on lg */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link
               href={getLocalizedLink("/")}
@@ -114,8 +120,8 @@ export const Footer = memo(() => {
             </p>
           </div>
 
-          {/* Navigation */}
-          <div>
+          {/* Navigation - Stack on mobile, 1 col on sm, 1 col on lg */}
+          <div className="sm:col-span-1">
             <Label className="mb-3 block text-xs uppercase tracking-wider text-faint">
               {t.footer.navigation}
             </Label>
@@ -128,12 +134,12 @@ export const Footer = memo(() => {
             </nav>
           </div>
 
-          {/* Connect */}
-          <div>
+          {/* Connect - Flex wrap on mobile, 1 col on sm, 1 col on lg */}
+          <div className="sm:col-span-1">
             <Label className="mb-3 block text-xs uppercase tracking-wider text-faint">
               {t.footer.connect}
             </Label>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {socialLinks.map((link) => (
                 <SocialLink
                   key={link.href}
@@ -145,18 +151,18 @@ export const Footer = memo(() => {
             </div>
           </div>
 
-          {/* Tech Stack */}
+          {/* Tech Stack - Full width on mobile, span 2 on sm, 1 col on lg */}
           <div className="sm:col-span-2 lg:col-span-1">
             <MonoText className="text-faint">{t.footer.builtWith}</MonoText>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
+        <div className="mt-6 flex flex-col items-start gap-4 border-t border-border pt-6 sm:items-center sm:justify-between sm:gap-0 sm:pt-8">
           <MonoText className="text-muted-foreground">
             © {t.footer.year} Pedro Felipe
           </MonoText>
-          <MonoText className="text-faint">v1.5.1</MonoText>
+          <MonoText className="text-faint">v2.6.1</MonoText>
         </div>
       </div>
     </footer>
