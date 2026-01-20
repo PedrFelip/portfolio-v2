@@ -1,14 +1,8 @@
-import {
-  ArrowRight,
-  Github,
-  Home,
-  Linkedin,
-  Mail,
-  Twitter,
-} from "lucide-react";
+import { ArrowRight, Github, Home, Linkedin, Mail } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Badge, H1, MonoText, P } from "@/components/ui";
+import { X } from "@/components/ui/x-icon";
 
 export const metadata: Metadata = {
   title: "Pedro Felipe - Links",
@@ -24,27 +18,27 @@ const socialLinks = [
   },
   {
     label: "GitHub",
-    url: "https://github.com/pdrfelipe",
+    url: "https://github.com/pedrfelip",
     icon: "github",
-    description: "@pdrfelipe",
+    description: "@pedrfelip",
   },
   {
     label: "LinkedIn",
-    url: "https://www.linkedin.com/in/pdrfelipe/",
+    url: "https://www.linkedin.com/in/pedrfelip/",
     icon: "linkedin",
-    description: "/in/pdrfelipe",
+    description: "/in/pedrfelip",
   },
   {
-    label: "X / Twitter",
+    label: "X",
     url: "https://x.com/pedrofelipeek",
-    icon: "twitter",
+    icon: "x",
     description: "@pedrofelipeek",
   },
   {
     label: "Email",
-    url: "mailto:pdrfelipe99@gmail.com",
+    url: "mailto:pfsilva190406@gmail.com",
     icon: "email",
-    description: "pdrfelipe99@gmail.com",
+    description: "pfsilva190406@gmail.com",
   },
 ] as const;
 
@@ -52,7 +46,7 @@ const iconMap = {
   portfolio: Home,
   github: Github,
   linkedin: Linkedin,
-  twitter: Twitter,
+  x: X,
   email: Mail,
 };
 
@@ -83,7 +77,7 @@ export default function LinksPage() {
         </div>
 
         {/* Links */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2 sm:gap-3">
           {socialLinks.map((link) => {
             const Icon = iconMap[link.icon];
             const isExternal = link.icon !== "portfolio";
@@ -102,22 +96,21 @@ export default function LinksPage() {
                 key={link.label}
                 {...linkProps}
                 aria-label={`Visit ${link.label}`}
-                className="group flex items-center gap-4 rounded-lg border border-border bg-card p-4 transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground"
+                className="group flex items-center gap-3 rounded-lg border border-border bg-card p-3 sm:p-4 transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted"
               >
                 {/* Icon */}
-                <div
-                  className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-border bg-muted text-muted-foreground transition-colors duration-150 group-hover:border-foreground group-hover:text-foreground"
+                <Icon
+                  className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 text-muted-foreground transition-colors duration-150 group-hover:text-foreground"
+                  strokeWidth={1.5}
                   aria-hidden="true"
-                >
-                  <Icon className="h-4 w-4" strokeWidth={1.5} />
-                </div>
+                />
 
                 {/* Content */}
-                <div className="flex min-w-0 flex-1 flex-col">
+                <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                   <span className="text-sm font-semibold tracking-tight text-foreground">
                     {link.label}
                   </span>
-                  <MonoText className="text-muted-foreground">
+                  <MonoText className="text-xs text-muted-foreground">
                     {link.description}
                   </MonoText>
                 </div>
