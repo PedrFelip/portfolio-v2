@@ -17,13 +17,17 @@ interface SkillItemProps {
 /**
  * SkillItem component
  *
+ * Design principles (AGENTS.md):
+ * - Uses standard Badge component for consistency
+ * - 4px grid padding maintained by Badge
+ * - Borders-only approach with subtle hover
+ * - Typography: monospace for skill names
+ *
  * Memoized to prevent re-renders for individual skill items
  * (Vercel: rerender-memo)
- *
- * Design: 4px grid padding (px-2.5 = 10px, py-1 = 4px)
  */
 const SkillItem = memo(({ skill }: SkillItemProps) => (
-  <span className="rounded border border-border bg-muted px-2.5 py-1 font-mono text-xs text-muted-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:text-foreground">
+  <span className="rounded border border-border bg-muted px-2.5 py-1 font-mono text-xs text-muted-foreground transition-[border-color,color] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:text-foreground motion-reduce:transition-none">
     {skill}
   </span>
 ));
@@ -36,9 +40,9 @@ interface SkillCategoryGroupProps extends SkillCategory {}
  * SkillCategoryGroup component
  *
  * Design principles (AGENTS.md):
- * - 4px grid: consistent spacing throughout
+ * - 4px grid: consistent spacing (gap-2 = 8px, gap-3 = 12px)
  * - Symmetrical padding: matching padding on all sides
- * - Typography: monospace for data (skills)
+ * - Typography: H3 for category titles, monospace for skills
  *
  * Memoized to prevent re-renders when skills in a category don't change
  * (Vercel: rerender-memo)
@@ -64,6 +68,7 @@ SkillCategoryGroup.displayName = "SkillCategoryGroup";
  * Design principles (AGENTS.md):
  * - 4px grid: consistent spacing throughout
  * - Mobile-first: optimized for small screens
+ * - Section component for consistent page structure
  *
  * Best practices applied:
  * - Memoized to prevent unnecessary re-renders (Vercel: rerender-memo)
