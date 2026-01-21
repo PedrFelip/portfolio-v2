@@ -19,7 +19,7 @@ interface SectionHeaderProps {
  * Spacing scale:
  * - mb-8 on mobile (32px)
  * - mb-12 on tablet/desktop (48px)
- * - Extra spacing after description for better visual separation (mb-6)
+ * - Description uses mb-4 for proper visual separation (matches grid content gap)
  */
 export const SectionHeader = ({
   badge,
@@ -33,7 +33,7 @@ export const SectionHeader = ({
         <Label className="mb-3 uppercase tracking-wider">{badge}</Label>
       )}
       <H2 className="mb-4">{title}</H2>
-      {description && <P className="max-w-2xl mb-2">{description}</P>}
+      {description && <P className="max-w-2xl mb-4">{description}</P>}
       {children}
     </div>
   );
