@@ -34,7 +34,13 @@ export function extractHeadings(content: string): Heading[] {
   // biome-ignore lint/suspicious/noAssignInExpressions: regex exec pattern requires assignment in loop
   while ((match = headingRegex.exec(content)) !== null) {
     const level = match[1].length as 2 | 3;
-    const text = match[2].trim();
+    const text = match[2]
+      .trim()
+      .replace(/\*\*/g, "") // Remove bold markdown
+      .replace(/\*/g, "") // Remove italic markdown
+      .replace(/__/g, "") // Remove underline bold
+      .replace(/_/g, "") // Remove underline italic
+      .trim();
     const id = slugify(text);
 
     headings.push({ level, text, id });
