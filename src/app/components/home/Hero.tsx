@@ -29,7 +29,7 @@ interface TechBadgeProps {
 
 const TechBadge = memo(({ tech, index }: TechBadgeProps) => (
   <Badge
-    className="transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted/80"
+    className="transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted/60"
     style={{ animationDelay: `${index * 50}ms` }}
   >
     {tech}

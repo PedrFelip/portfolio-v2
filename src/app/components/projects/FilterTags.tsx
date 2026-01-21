@@ -3,6 +3,7 @@
 import { memo } from "react";
 import { MonoText } from "@/components/ui";
 import { useLanguage } from "@/lib/LanguageContext";
+import { cn } from "@/lib/utils";
 
 interface FilterTagsProps {
   selectedTags: string[];
@@ -14,7 +15,7 @@ interface FilterTagsProps {
  * FilterTags component
  *
  * Design principles (AGENTS.md):
- * - 4px grid spacing (gap-2 = 8px, gap-3 = 12px)
+ * - 4px grid spacing (gap-2 = 8px, gap-3 = 12px, px-2.5 py-1)
  * - Borders-only approach with subtle hover effects
  * - Typography: MonoText for status, Label for buttons
  * - Animation: 150ms with cubic-bezier easing
@@ -22,7 +23,7 @@ interface FilterTagsProps {
  *
  * Best practices applied:
  * - Memoized to prevent re-renders
- * - Consistent with Badge component styling
+ * - Uses cn() for className merging (Vercel: bundle-barrel-imports)
  * - Clear active/inactive states
  */
 export const FilterTags = memo(
@@ -71,11 +72,12 @@ export const FilterTags = memo(
                 key={tag}
                 type="button"
                 onClick={() => toggleTag(tag)}
-                className={`rounded border px-2.5 py-1 font-mono text-xs transition-[border-color,background-color,color] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] motion-reduce:transition-none ${
+                className={cn(
+                  "rounded border px-2.5 sm:px-3 py-1 sm:py-1.5 font-mono text-xs transition-[border-color,background-color,color] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] motion-reduce:transition-none",
                   isSelected
                     ? "border-foreground bg-foreground text-background"
-                    : "border-border bg-muted text-muted-foreground hover:border-foreground hover:bg-muted/80 hover:text-foreground"
-                }`}
+                    : "border-border bg-muted text-muted-foreground hover:border-foreground hover:bg-muted/60 hover:text-foreground",
+                )}
               >
                 {tag}
               </button>

@@ -72,7 +72,7 @@ export const ProjectCard = memo(({ project }: ProjectCardProps) => {
           {displayedTechs.map((tech) => (
             <Badge
               key={tech}
-              className="transition-[border-color,background-color] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted/80 motion-reduce:transition-none"
+              className="transition-[border-color,background-color] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted/60 motion-reduce:transition-none"
             >
               {tech}
             </Badge>
