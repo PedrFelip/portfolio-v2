@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Copy } from "lucide-react";
-import { memo, useState } from "react";
+import { memo, useState, useTransition } from "react";
 
 interface CodeBlockProps {
   children: React.ReactNode;
@@ -22,9 +22,11 @@ interface CodeBlockProps {
  * Best practices applied:
  * - Memoized to prevent re-renders
  * - Non-blocking clipboard operation
+ * - useTransition for state updates (Vercel best practice)
  */
 export const CodeBlock = memo(({ children, className }: CodeBlockProps) => {
   const [copied, setCopied] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const copyToClipboard = () => {
     const text =
@@ -35,8 +37,11 @@ export const CodeBlock = memo(({ children, className }: CodeBlockProps) => {
           : String(children);
 
     navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    // Use startTransition to mark state update as non-blocking
+    startTransition(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
   };
 
   return (
@@ -44,7 +49,8 @@ export const CodeBlock = memo(({ children, className }: CodeBlockProps) => {
       <button
         type="button"
         onClick={copyToClipboard}
-        className="absolute right-3 top-3 flex items-center gap-1.5 rounded border border-border bg-background px-2 py-1.5 font-mono text-xs text-muted-foreground opacity-0 transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:text-foreground hover:bg-muted/50 group-hover:opacity-100"
+        disabled={isPending}
+        className="absolute right-3 top-3 flex items-center gap-1.5 rounded border border-border bg-background px-2 sm:px-2.5 py-1 sm:py-1.5 font-mono text-xs text-muted-foreground opacity-0 transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:text-foreground hover:bg-muted/50 group-hover:opacity-100 disabled:opacity-50 disabled:cursor-not-allowed"
         aria-label={copied ? "Copied!" : "Copy code"}
       >
         {copied ? (

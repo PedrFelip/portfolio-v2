@@ -3,7 +3,7 @@
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState, useTransition } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useLocalizedLink } from "@/lib/useLocalizedLink";
 
@@ -36,6 +36,7 @@ export const Navigation = memo(() => {
   const { language, setLanguage, t } = useLanguage();
   const getLocalizedLink = useLocalizedLink();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const navLinks: NavLink[] = useMemo(
     () => [
@@ -58,7 +59,9 @@ export const Navigation = memo(() => {
   );
 
   const toggleLanguage = useCallback(() => {
-    setLanguage(language === "en" ? "pt" : "en");
+    startTransition(() => {
+      setLanguage(language === "en" ? "pt" : "en");
+    });
   }, [language, setLanguage]);
 
   const closeMenu = useCallback(() => {
@@ -107,7 +110,8 @@ export const Navigation = memo(() => {
             <button
               type="button"
               onClick={toggleLanguage}
-              className="inline-flex min-h-[44px] items-center gap-2 rounded border border-border bg-background px-3.5 py-2 font-mono text-xs font-medium text-muted-foreground transition-[border-color,background-color,color,transform] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground/50 hover:text-foreground hover:bg-muted/50 active:scale-95 motion-reduce:transition-none"
+              disabled={isPending}
+              className="inline-flex min-h-[44px] items-center gap-2 rounded border border-border bg-background px-3.5 py-2 font-mono text-xs font-medium text-muted-foreground transition-[border-color,background-color,color,transform,opacity] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground/50 hover:text-foreground hover:bg-muted/60 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed motion-reduce:transition-none"
               aria-label={t.nav.language}
             >
               <span>{language === "en" ? "EN" : "PT"}</span>
@@ -116,7 +120,7 @@ export const Navigation = memo(() => {
             <button
               type="button"
               onClick={toggleMenu}
-              className="inline-flex md:hidden min-h-[44px] items-center rounded border border-border bg-background p-2 text-muted-foreground transition-[border-color,background-color,color,transform] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground/50 hover:text-foreground hover:bg-muted/50 active:scale-95 motion-reduce:transition-none"
+              className="inline-flex md:hidden min-h-[44px] items-center rounded border border-border bg-background p-2 text-muted-foreground transition-[border-color,background-color,color,transform] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground/50 hover:text-foreground hover:bg-muted/60 active:scale-95 motion-reduce:transition-none"
               aria-label={t.nav.toggleMenu}
               aria-expanded={isMenuOpen}
             >
@@ -144,7 +148,7 @@ export const Navigation = memo(() => {
                   className={`min-h-[44px] px-4 py-3 font-mono text-xs font-medium transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] ${
                     isActive(link.href)
                       ? "text-foreground bg-muted/60 border-l-2 border-accent"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
                   }`}
                   aria-current={isActive(link.href) ? "page" : undefined}
                 >
