@@ -13,17 +13,17 @@ categories:
 published: true
 ---
 
-## **Introdução aos DTOs**
+## Introdução aos DTOs
 
-Os **Data Transfer Objects (DTOs)**, traduzidos como **Objetos de Transferência de Dados**, são estruturas simples usadas para transportar dados entre diferentes partes de um sistema, especialmente entre camadas de aplicação ou entre sistemas. <br />
-<br />
+**Data Transfer Objects (DTOs)** — traduzidos como **Objetos de Transferência de Dados** — são estruturas simples usadas para transportar dados entre diferentes partes de um sistema, especialmente entre camadas de aplicação ou entre sistemas.
 
-O **principal objetivo** dos **DTOs** é **encapsular os dados** de forma que possam ser facilmente transferidos, **sem expor a lógica de negócios** ou detalhes internos da aplicação.
-Eles são frequentemente usados em arquiteturas de software como **MVC (Model-View-Controller)** ou em **serviços web** para garantir que apenas os dados necessários sejam compartilhados. <br />
-Sem um **DTOs**, você pode acabar passando objetos **complexos** (por exemplo, entidades do banco de dados) direto para o cliente. <br /> <br />
+O principal objetivo dos DTOs é **encapsular os dados** de forma que possam ser facilmente transferidos, **sem expor a lógica de negócios** ou detalhes internos da aplicação. Eles são frequentemente usados em arquiteturas de software como **MVC (Model-View-Controller)** ou em **serviços web** para garantir que apenas os dados necessários sejam compartilhados.
 
-**Exemplo:** <br />
-Onde você tem uma **entidade de usuário** no banco de dados que contém **informações sensíveis como senha, data de criação**, etc. <br />
+Sem DTOs, você pode acabar passando objetos complexos (por exemplo, entidades do banco de dados) direto para o cliente.
+
+### Exemplo: Expondo dados sensíveis
+
+Considere uma entidade de usuário no banco de dados com **informações sensíveis**:
 
 ```ts
 export class User {
@@ -36,9 +36,7 @@ export class User {
 }
 ```
 
-Mas aí quando a API responde ao cliente, você não quer expor a **senha** ou outras informações internas, certo? <br />
-
-É aí que entra o **DTO** para resolver esse problema. Você cria um **UserDTO** que contém apenas os campos que você quer expor para o cliente.
+Quando a API responde ao cliente, você não quer expor **senha** ou outras informações internas. É aí que o DTO resolve esse problema:
 
 ```ts
 interface UserDTO {
@@ -48,46 +46,41 @@ interface UserDTO {
 }
 ```
 
-Agora sua API, sempre que receber ou enviar dados de usuário, vai usar o **UserDTO**. Isso garante que apenas os dados necessários sejam transferidos, melhorando a **segurança** e a **eficiência** da comunicação.
-<br />
+Agora sua API usa o **UserDTO** para transferir dados, garantindo segurança e eficiência.
 
-## **Por que usar DTOs?**
+## Por que usar DTOs?
 
 Eles evitam o **acoplamento direto entre a lógica de negócios e os dados externos**.
-<br />
 
-### **Características dos DTOs**
+### Características dos DTOs
 
-- **Simples**: Contêm apenas os dados necessários, sem lógica de negócios.
-- **Imutáveis (idealmente)**: Uma vez criados e usados apenas para transferência de dados.
-- **Específicos**: Sendo projetados para casos de uso específicos, facilitando a manutenção.
-- **Desacoplados de Entidades de banco de dados**: Separando a estrutura de dados da lógica de negócios.
-  <br />
+- **Simples** — Contêm apenas os dados necessários, sem lógica de negócios
+- **Imutáveis** — Uma vez criados, usados apenas para transferência de dados
+- **Específicos** — Projetados para casos de uso específicos, facilitando manutenção
+- **Desacoplados** — Separados de Entidades de banco de dados e lógica de negócios
 
-### **Benefícios dos DTOs**
+### Benefícios dos DTOs
 
-- **Clareza**: Facilita o entendimento dos dados que estão sendo transferidos.
-- **Facilidade de manutenção**: Qualquer alteração pode ser feita em um único lugar.
-- **Validação**: Permite validar os dados antes de serem processados.
+- **Clareza** — Facilita o entendimento dos dados transferidos
+- **Manutenção** — Alterações centralizadas em um único lugar
+- **Validação** — Permite validar dados antes do processamento
 
 ---
 
-## **Tipos de DTOs**
+## Tipos de DTOs
 
-Os Objetos **DTOs** são classificados em diferentes tipos, mas como principais vamos destacar dois:
+Objetos DTOs são classificados em diferentes tipos. Os principais são:
 
-- **Request DTO**: Representa os dados recebidos de uma requisição (geralmente HTTP), onde você define quais dados são esperados do cliente, servindo como uma camada de validação.
-- **Response DTO**: Define o formato que será enviado de volta ao cliente, garantindo que apenas os dados necessários sejam expostos.
+- **Request DTO** — Representa dados recebidos de uma requisição (geralmente HTTP). Define quais dados são esperados do cliente, servindo como camada de validação.
+- **Response DTO** — Define o formato enviado de volta ao cliente, garantindo que apenas dados necessários sejam expostos.
 
-<br />
+Em projetos maiores, também encontramos:
 
-Em projetos maiores, é comum encontrar outros tipos de DTOs, cada um com um propósito específico, como:
+- **Update DTOs** — Para atualizar apenas determinados campos de um recurso
+- **Domain DTOs** — Representam dados específicos de um domínio ou contexto
+- **Pagination DTOs** — Estruturam informações de paginação (página, total, itens por página)
 
-- **Update DTOs**: Utilizados para atualizar apenas determinados campos de um recurso.
-- **Domain DTOs**: Representam dados específicos de um domínio ou contexto da aplicação.
-- **Pagination DTOs**: Estruturam informações de paginação, como número da página, total de itens e itens por página (metadados de paginação).
-
-### **Exemplo Prático de DTOs de Request e Response**
+### Exemplo de DTOs
 
 ```ts
 interface CreateUserRequestDTO {
@@ -95,45 +88,33 @@ interface CreateUserRequestDTO {
 	email: string;
 	password: string;
 }
-```
 
-```ts
-interface GetUserRequestDTO {
-	id: string;
-}
-```
-
-```ts
 interface UserResponseDTO {
 	id: string;
 	name: string;
 	email: string;
 }
-```
 
-```ts
 interface DeleteUserResponseDTO {
 	message: string;
 	success: boolean;
 }
 ```
 
-<br />
+## Fluxo: Controller → Service → Repository
 
-## **Controller ao Repository**
+Um fluxo comum em aplicações com arquitetura **MVC** é:
 
-Um fluxo que é comum em aplicaçoes com Arquitetura model-view-controller (MVC) é o seguinte:
+1. **Controller** recebe requisição HTTP e extrai dados
+2. **Controller** cria um Request DTO com os dados extraídos
+3. **Controller** passa Request DTO para o Service/camada de negócio
+4. **Service** processa dados e interage com Repository para persistência
+5. **Service** cria Response DTO com dados processados
+6. **Controller** envia Response DTO como resposta HTTP
 
-1. O **Controller** recebe uma requisição HTTP e extrai os dados do corpo da requisição.
-2. O **Controller** cria um **Request DTO** com os dados extraídos.
-3. O **Controller** passa o **Request DTO** para o serviço ou camada de negócio.
-4. O serviço processa os dados e interage com o **Repository** para persistir ou recuperar dados do banco de dados.
-5. O serviço recebe os dados do **Repository** e cria um **Response DTO** com os dados que serão enviados de volta ao cliente.
-6. O **Controller** envia o **Response DTO** como resposta HTTP.
+### Implementação do Fluxo
 
-### **Exemplo de Fluxo com DTOs**
-
-vamos começar com a entidade do usuário:
+Começamos com a entidade do usuário:
 
 ```ts
 export class User {
@@ -146,7 +127,7 @@ export class User {
 }
 ```
 
-Agora, vamos definir os DTOs:
+DTOs:
 
 ```ts
 // dtos/user.dto.ts
@@ -163,7 +144,7 @@ export interface UserResponseDTO {
 }
 ```
 
-Com isso vamos ter o Repository:
+Repository — responsável pela persistência:
 
 ```ts
 import { User } from '../entities/user.entity';
@@ -187,7 +168,7 @@ export class UserRepository {
 }
 ```
 
-E o Service:
+Service — contém lógica de negócio:
 
 ```ts
 import { UserRepository } from '../repositories/user.repository';
@@ -211,7 +192,7 @@ export class UserService {
 }
 ```
 
-E finalmente o Controller:
+Controller — orquestra a requisição:
 
 ```ts
 import { UserService } from '../services/user.service';
@@ -221,25 +202,24 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 export class UserController {
 	constructor(private userService: UserService) {}
 
-	async createUser(request: FastifyRequest<{ Body: CreateUserDTO }>, reply: FastifyReply) {
+	async createUser(
+		request: FastifyRequest<{ Body: CreateUserDTO }>,
+		reply: FastifyReply
+	) {
 		const userData: CreateUserDTO = request.body;
-
 		const userResponse: UserResponseDTO = this.userService.createUser(userData);
-
 		return reply.code(201).send(userResponse);
 	}
 }
 ```
 
-<br />
+### Fluxo Explicado
 
-O **Controller** é responsável por **receber a requisição HTTP**, interpretar os dados enviados e transformá-los em um **Request DTO**.
-Esse DTO define **exatamente o formato e os campos que a API aceita**, garantindo consistência e validação na entrada. <br />
-O **Service** que lida com a lógica de negócios, recebe o **Request DTO**, processa os dados conforme necessário e interage com o **Repository** que depois de criar o usuário, retorna a entidade completa. <br />
-O **Service** então cria um **Response DTO** a partir da entidade retornada pelo **Repository**. <br />
-Esse **Response DTO** define **quais dados serão expostos ao cliente**. Finalmente, o **Controller** envia o **Response DTO** como resposta HTTP para o cliente, garantindo que apenas os dados necessários sejam compartilhados. <br />
+- **Controller** recebe requisição HTTP, interpreta dados e transforma em Request DTO. Esse DTO define **exatamente o formato e campos aceitos**, garantindo consistência e validação.
+- **Service** recebe Request DTO, processa conforme lógica de negócio, interage com Repository que cria o usuário e retorna a entidade completa.
+- **Service** transforma entidade em Response DTO, definindo **quais dados serão expostos ao cliente**.
+- **Controller** envia Response DTO como resposta HTTP, garantindo que apenas dados necessários sejam compartilhados.
 
-## **Conclusão**
+## Conclusão
 
-- DTOs trazem clareza à forma como os dados trafegam dentro da aplicação
-- Reduzem o acoplamento entre a lógica de negócio e o mundo externo (APIs, front-end, bancos)
+DTOs trazem **clareza** à forma como dados trafegam dentro da aplicação e **reduzem acoplamento** entre lógica de negócio e mundo externo (APIs, front-end, bancos). Use-os como padrão em suas arquiteturas para melhor manutenção e segurança.

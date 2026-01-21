@@ -1,9 +1,9 @@
 ---
 title: Bem-vindo ao Blog
-description: Esse é o primeiro post para estrear .
+description: Primeiro post do blog com exemplos de Hello World em diferentes linguagens.
 tldr:
-  - Resumo rápido do primeiro post do blog e boas-vindas.
-  - Exemplos de Hello World em TypeScript, Go, Bash e JSON.
+  - Resumo rápido e boas-vindas ao blog
+  - Exemplos de Hello World em TypeScript, Go, Bash e JSON
 date: '2025-10-28'
 categories:
   - Blog
@@ -12,9 +12,9 @@ published: true
 
 ## Hello World dos Blog
 
-Seja bem-vindo ao meu primeiro post no blog!
+Bem-vindo ao meu primeiro post no blog! Aqui você encontra conteúdo sobre backend, arquitetura de software, Linux e ferramentas que uso.
 
-<br />
+Vamos começar com alguns "Hello World" clássicos em diferentes linguagens:
 
 ### TypeScript
 
@@ -24,8 +24,6 @@ function main(): void {
 }
 main();
 ```
-
-<br />
 
 ### Go
 
@@ -39,8 +37,6 @@ func main() {
 }
 ```
 
-<br />
-
 ### Bash
 
 ```bash
@@ -48,9 +44,7 @@ func main() {
 echo "Hello, World!"
 ```
 
-<br />
-
-### Json
+### JSON
 
 ```json
 {

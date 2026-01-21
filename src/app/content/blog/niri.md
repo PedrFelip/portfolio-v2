@@ -1,43 +1,47 @@
 ---
-title: Niri um tiling baseado em scroll
-description: Niri WM traz o conceito de scrollable tiling, janelas organizadas verticalmente com navegação fluida, sem perder foco e produtividade.
+title: Niri — um tiling baseado em scroll
+description: Niri WM traz o conceito de scrollable tiling, janelas organizadas com navegação fluida, mantendo foco e produtividade.
 tldr:
-  - Introduz o conceito de scrollable tiling e por que o Niri não redimensiona janelas existentes.
-  - Compara a experiência com outros tilers como Hyprland, destacando foco e produtividade.
-  - Resume as principais features e como configurar o compositor via arquivo .kdl.
+  - Introduz scrollable tiling e por que Niri não redimensiona janelas existentes
+  - Compara com outros tilers como Hyprland, destacando diferenças de workflow
+  - Resume features principais e configuração via arquivo .kdl
 date: '2025-11-02'
 categories:
   - NiriWM
   - Linux
   - Window Managers
-  - Produtividade
 published: true
 ---
 
-## **Introdução ao Niri Scrollable Tiling**
+## Introdução ao Niri Scrollable Tiling
 
-O **Niri** é um compositor **Wayland** que organiza janelas em um layout que estende horizontalmente para a direita infinitamente, que ao abrir uma nova janela nunca faz com que as janelas existentes sejam redimensionadas. <br />
-Isso permite que navegue facilmente as colunas de janelas usando **atalhos de teclado**, rolando nas janelas abertas, mantendo o foco e a produtividade. <br />
-Ele é escrito em **Rust**, o que já é um ponto de hype 😅 <br />
-**Links do projeto:** <br />
+**Niri** é um compositor **Wayland** que organiza janelas em um layout que se estende horizontalmente infinitamente. Ao abrir nova janela, as existentes **nunca são redimensionadas** — você apenas rola horizontalmente para acessá-las.
 
-- [Niri WM](https://github.com/YaLTeR/niri)
-- [Documentação](https://yalter.github.io/niri/Configuration%3A-Introduction.html)
-  <br />
+Isso permite navegação fluida através de **atalhos de teclado**, mantendo **foco e produtividade**. Escrito em **Rust**, o projeto é promissor e bem mantido.
+
+**Links:**
+- [Niri WM no GitHub](https://github.com/YaLTeR/niri)
+- [Documentação oficial](https://yalter.github.io/niri/Configuration%3A-Introduction.html)
 
 ---
 
-## **Mas oq diferencia ele de outros tiling window managers como hyprland e i3?**
+## O que diferencia Niri de outros window managers?
 
-O destaque do **Niri** é o **“scrollable tiling”** <br />
-Um modelo em que o layout não é limitado por uma grade fixa, mas por uma sequência rolável de colunas.
-Isso muda completamente a experiência de multitarefa: você pode manter várias janelas abertas **“fora da tela”**, sem bagunçar o layout atual.
+O destaque do Niri é o **"scrollable tiling"** — um modelo onde o layout não é limitado por grade fixa, mas por sequência rolável de colunas. Isso muda completamente a experiência de multitarefa: você pode manter várias janelas abertas "fora da tela", sem bagunçar o layout atual.
 
 ![Niri WM mostrando layout scrollable com janelas organizadas horizontalmente](/images/posts/niri/niri-hero.webp)
 
-> Perceba que a janela do zed está do lado direito, fora da tela principal, mas ainda acessível via scroll horizontal
+> A janela do Zed está à direita fora da tela, mas acessível via scroll horizontal.
 
-<br />
+### Comparação com Hyprland
+
+**Hyprland** redistribui espaço entre todas as janelas abertas ao abrir uma nova, causando **redimensionamentos indesejados** e perda de foco.
+
+**Niri** mantém tamanhos originais das janelas — você apenas rola horizontalmente para acessar adicionais, proporcionando **experiência mais fluida e focada**.
+
+![Comparação do Hyprland mostrando redimensionamento automático de janelas](/images/posts/niri/hyprland-exemplo.webp)
+
+> Hyprland redimensiona todas as janelas para caber na tela.
 
 ### **O que muda comparando com o hyprland?**
 
@@ -50,33 +54,34 @@ No **Niri**, as janelas mantêm seus tamanhos originais, e você pode rolar hori
 
 <br />
 
-## **Features principais do Niri**
+## Features principais do Niri
 
-- **Construído do zero pensado para scrollable tiling**
-- **Áreas de trabalho dinâmicas**
-- **Overviews de janelas abertas**
-- **Grupo de Janelas em Abas**
-- **Recarregamento dinâmico de configurações**
-- **Gestos em touchpad e mouse**
+- **Scrollable tiling** — Construído do zero com esse conceito em mente
+- **Workspaces dinâmicos** — Crie e organize áreas de trabalho conforme necessário
+- **Window overview** — Visualize todas janelas abertas e workspaces
+- **Window grouping** — Agrupe janelas em abas
+- **Configuração dinâmica** — Recarregamento de config sem reiniciar
+- **Gestos** — Suporte a touchpad e mouse gestures
 
-### **Quer experimentar o scrollable tiling?**
+### Experimentar scrollable tiling
 
-Tem projetos de tiling que são implementadas em DEs como **gnome** e **kde**, como o **PaperWM** e o **Karousel**, respectivamente, que são ótimos projetos para quem quer experimentar o conceito sem sair do ambiente atual.
-Tem o **PaperWM.spoon** para **MacOS**, que traz o conceito de scrollable tiling para o ecossistema da maçã. <br />
+Se não quer instalar Niri ainda, existem implementações parciais para outros ambientes:
 
-> Lembrando que são implementações parciais do conceito, pode não ser tão polido, mas é bom pra testar o conceito.
+- **PaperWM** — Extensão para GNOME
+- **Karousel** — Extensão para KDE Plasma
+- **PaperWM.spoon** — Para macOS
 
-## **Configuração do Niri**
+> Essas implementações são parciais, podem não ser tão polidas, mas são ótimas para testar o conceito.
+
+## Configuração do Niri
 
 ![Niri Overview mostrando janelas abertas e áreas de trabalho organizadas](/images/posts/niri/overview.webp)
 
-> Um Overview tipo do gnome, que mostra as janelas abertas e organizadas, além de mostrar as áreas de trabalho (no meu caso, duas áreas de trabalho)
+> Overview mostrando janelas abertas e organizadas em workspaces.
 
-A configuração do **Niri** é feita através de um arquivo **.kdl (Kotlin Data Language)** que é simples e direto. <br />
+Configuração é via arquivo **.kdl (Kotlin Data Language)** — simples e direto. A estrutura básica inclui seções para **atalhos**, **comportamento de janelas** e **preferências**.
 
-A estrutura básica do arquivo de configuração inclui seções para definir **atalhos de teclado**, **comportamento de janelas** e outras preferências. <br />
-
-```json
+```kdl
 input { ... }
 output "nome-do-monitor" { ... }
 layout { ... }
@@ -89,9 +94,6 @@ window-rule { ... }
 binds { ... }
 ```
 
----
+## Considerações finais
 
-## **Considerações Finais**
-
-O **Niri** é um grande projeto promissor que traz um workflow diferente para o mundo dos tiling window managers. Venho testando ele essa semana e estou gostando bastante do conceito. <br />
-Se você é entusiasta de window managers, vale a pena dar uma olhada! <br />
+Niri é projeto promissor que traz workflow diferente para tiling window managers. Vale experimentar se você curte esse universo. A curva de aprendizado é baixa e documentação é clara.
