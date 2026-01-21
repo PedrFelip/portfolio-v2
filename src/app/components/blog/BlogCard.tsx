@@ -2,7 +2,7 @@
 
 import { ArrowRight, Calendar } from "lucide-react";
 import Link from "next/link";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import {
   Badge,
   Card,
@@ -35,20 +35,26 @@ interface BlogCardProps {
  * Best practices applied:
  * - Memoized to prevent re-renders when post prop doesn't change
  * - Flex column layout with flex-grow to push links to bottom
+ * - useMemo for date formatting optimization (Vercel best practice)
  * - Clean component composition
  * - Uses shadcn/ui components: Card, H3, P, MonoText, Badge
  */
 export const BlogCard = memo(({ post }: BlogCardProps) => {
   const { t, language } = useLanguage();
 
-  // Format date
-  const formattedDate = new Date(post.date).toLocaleDateString(
-    language === "pt" ? "pt-BR" : "en-US",
-    {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    },
+  // Memoize date formatting to avoid expensive toLocaleDateString() on every render
+  // Vercel best practice: cache function results
+  const formattedDate = useMemo(
+    () =>
+      new Date(post.date).toLocaleDateString(
+        language === "pt" ? "pt-BR" : "en-US",
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        },
+      ),
+    [post.date, language],
   );
 
   return (
@@ -79,7 +85,7 @@ export const BlogCard = memo(({ post }: BlogCardProps) => {
             {post.tags.map((tag) => (
               <Badge
                 key={tag}
-                className="transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted/80"
+                className="transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:bg-muted/60"
               >
                 {tag}
               </Badge>
