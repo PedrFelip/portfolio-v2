@@ -112,6 +112,7 @@ export interface Education {
  * @property excerpt - Short description
  * @property tags - Array of post tags
  * @property content - Full post content (rendered HTML)
+ * @property headings - Optional extracted headings for TOC
  */
 export interface BlogPost {
   slug: string;
@@ -120,6 +121,7 @@ export interface BlogPost {
   excerpt: string;
   tags: string[];
   content: string;
+  headings?: Heading[];
 }
 
 /**
@@ -140,6 +142,21 @@ export interface BlogMetadata {
   date: string;
   excerpt: string;
   tags: string[];
+}
+
+/**
+ * Heading extracted from blog post content
+ *
+ * Used for Table of Contents generation.
+ *
+ * @property level - Heading level (2 for h2, 3 for h3)
+ * @property text - Heading text content
+ * @property id - Slugified ID for anchor links
+ */
+export interface Heading {
+  level: 2 | 3;
+  text: string;
+  id: string;
 }
 
 /**

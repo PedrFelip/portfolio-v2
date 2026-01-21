@@ -21,6 +21,7 @@ export const blogContent = {
       previous: "Previous",
       next: "Next",
       allTags: "All tags",
+      onThisPage: "On This Page",
     },
   },
   pt: {
@@ -42,6 +43,7 @@ export const blogContent = {
       previous: "Anterior",
       next: "Próximo",
       allTags: "Todas as tags",
+      onThisPage: "Nesta página",
     },
   },
 };

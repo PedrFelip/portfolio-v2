@@ -2,10 +2,46 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { cache } from "react";
-import type { BlogMetadata, BlogPost } from "@/types/portfolio";
+import type { BlogMetadata, BlogPost, Heading } from "@/types/portfolio";
 
 const BLOG_DIR = path.join(process.cwd(), "src/app/content/blog");
 const POSTS_PER_PAGE = 6;
+
+/**
+ * Slugify text for anchor IDs
+ * Handles Portuguese characters (accents, ç)
+ */
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize("NFD") // Decompose accents
+    .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+    .replace(/[^\w\s-]/g, "") // Remove special chars
+    .replace(/\s+/g, "-") // Spaces to hyphens
+    .replace(/-+/g, "-") // Multiple hyphens to single
+    .trim();
+}
+
+/**
+ * Extract headings from markdown content
+ * Returns array of heading objects with level, text, and id
+ */
+export function extractHeadings(content: string): Heading[] {
+  const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+  const headings: Heading[] = [];
+  let match: RegExpExecArray | null = null;
+
+  // biome-ignore lint/suspicious/noAssignInExpressions: regex exec pattern requires assignment in loop
+  while ((match = headingRegex.exec(content)) !== null) {
+    const level = match[1].length as 2 | 3;
+    const text = match[2].trim();
+    const id = slugify(text);
+
+    headings.push({ level, text, id });
+  }
+
+  return headings;
+}
 
 /**
  * Get all blog post slugs
@@ -41,6 +77,7 @@ export const getPostBySlug = cache((slug: string): BlogPost | null => {
 
     const fileContents = fs.readFileSync(fullPath, "utf8");
     const { data, content } = matter(fileContents);
+    const headings = extractHeadings(content);
 
     return {
       slug,
@@ -49,6 +86,7 @@ export const getPostBySlug = cache((slug: string): BlogPost | null => {
       excerpt: data.excerpt || "",
       tags: data.tags || [],
       content,
+      headings,
     };
   } catch (error) {
     console.error(`Error reading post ${slug}:`, error);
