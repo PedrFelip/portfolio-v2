@@ -1,9 +1,6 @@
 ---
 title: Bem-vindo ao Blog
 description: Primeiro post do blog com exemplos de Hello World em diferentes linguagens.
-tldr:
-  - Resumo rápido e boas-vindas ao blog
-  - Exemplos de Hello World em TypeScript, Go, Bash e JSON
 date: '2025-10-28'
 categories:
   - Blog

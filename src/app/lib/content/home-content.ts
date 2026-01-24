@@ -42,7 +42,7 @@ export const homeContent = {
       text1:
         "I believe the best way to grow as a developer is through hands-on experience. Every project is an opportunity to solve real problems, experiment with new technologies, and push the boundaries of what I know.",
       text2:
-        "Whether it's optimizing infrastructure, designing scalable architectures, or automating complex workflows — I'm driven by the challenge of building systems that work reliably and efficiently.",
+        "Whether it's optimizing infrastructure, designing scalable architectures, or automating complex workflows - I'm driven by the challenge of building systems that work reliably and efficiently.",
     },
   },
   pt: {
@@ -83,7 +83,7 @@ export const homeContent = {
       text1:
         "Acredito que a melhor forma de crescer como desenvolvedor é através da experiência prática. Cada projeto é uma oportunidade para resolver problemas reais, experimentar novas tecnologias e expandir os limites do que eu sei.",
       text2:
-        "Seja otimizando infraestrutura, projetando arquiteturas escaláveis ou automatizando workflows complexos — sou movido pelo desafio de construir sistemas que funcionam de forma confiável e eficiente.",
+        "Seja otimizando infraestrutura, projetando arquiteturas escaláveis ou automatizando workflows complexos - sou movido pelo desafio de construir sistemas que funcionam de forma confiável e eficiente.",
     },
   },
 };

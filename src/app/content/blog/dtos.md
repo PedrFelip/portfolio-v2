@@ -1,10 +1,6 @@
 ---
 title: O que são DTOs (Data Transfer Objects)?
 description: Entenda o papel dos DTOs na arquitetura de software e como eles ajudam a melhorar a comunicação entre diferentes camadas e sistemas.
-tldr:
-  - Explica por que DTOs existem e como evitam expor entidades e lógica de negócio.
-  - Mostra exemplos práticos de Request/Response DTO e fluxo Controller → Service → Repository.
-  - Resume melhores práticas para deixar dados mais seguros e manutenção mais simples.
 date: '2025-11-05'
 categories:
   - DTOs
@@ -15,7 +11,7 @@ published: true
 
 ## Introdução aos DTOs
 
-**Data Transfer Objects (DTOs)** — traduzidos como **Objetos de Transferência de Dados** — são estruturas simples usadas para transportar dados entre diferentes partes de um sistema, especialmente entre camadas de aplicação ou entre sistemas.
+**Data Transfer Objects (DTOs)** - traduzidos como **Objetos de Transferência de Dados** - são estruturas simples usadas para transportar dados entre diferentes partes de um sistema, especialmente entre camadas de aplicação ou entre sistemas.
 
 O principal objetivo dos DTOs é **encapsular os dados** de forma que possam ser facilmente transferidos, **sem expor a lógica de negócios** ou detalhes internos da aplicação. Eles são frequentemente usados em arquiteturas de software como **MVC (Model-View-Controller)** ou em **serviços web** para garantir que apenas os dados necessários sejam compartilhados.
 
@@ -54,16 +50,16 @@ Eles evitam o **acoplamento direto entre a lógica de negócios e os dados exter
 
 ### Características dos DTOs
 
-- **Simples** — Contêm apenas os dados necessários, sem lógica de negócios
-- **Imutáveis** — Uma vez criados, usados apenas para transferência de dados
-- **Específicos** — Projetados para casos de uso específicos, facilitando manutenção
-- **Desacoplados** — Separados de Entidades de banco de dados e lógica de negócios
+- **Simples** - Contêm apenas os dados necessários, sem lógica de negócios
+- **Imutáveis** - Uma vez criados, usados apenas para transferência de dados
+- **Específicos** - Projetados para casos de uso específicos, facilitando manutenção
+- **Desacoplados** - Separados de Entidades de banco de dados e lógica de negócios
 
 ### Benefícios dos DTOs
 
-- **Clareza** — Facilita o entendimento dos dados transferidos
-- **Manutenção** — Alterações centralizadas em um único lugar
-- **Validação** — Permite validar dados antes do processamento
+- **Clareza** - Facilita o entendimento dos dados transferidos
+- **Manutenção** - Alterações centralizadas em um único lugar
+- **Validação** - Permite validar dados antes do processamento
 
 ---
 
@@ -71,14 +67,14 @@ Eles evitam o **acoplamento direto entre a lógica de negócios e os dados exter
 
 Objetos DTOs são classificados em diferentes tipos. Os principais são:
 
-- **Request DTO** — Representa dados recebidos de uma requisição (geralmente HTTP). Define quais dados são esperados do cliente, servindo como camada de validação.
-- **Response DTO** — Define o formato enviado de volta ao cliente, garantindo que apenas dados necessários sejam expostos.
+- **Request DTO** - Representa dados recebidos de uma requisição (geralmente HTTP). Define quais dados são esperados do cliente, servindo como camada de validação.
+- **Response DTO** - Define o formato enviado de volta ao cliente, garantindo que apenas dados necessários sejam expostos.
 
 Em projetos maiores, também encontramos:
 
-- **Update DTOs** — Para atualizar apenas determinados campos de um recurso
-- **Domain DTOs** — Representam dados específicos de um domínio ou contexto
-- **Pagination DTOs** — Estruturam informações de paginação (página, total, itens por página)
+- **Update DTOs** - Para atualizar apenas determinados campos de um recurso
+- **Domain DTOs** - Representam dados específicos de um domínio ou contexto
+- **Pagination DTOs** - Estruturam informações de paginação (página, total, itens por página)
 
 ### Exemplo de DTOs
 
@@ -144,7 +140,7 @@ export interface UserResponseDTO {
 }
 ```
 
-Repository — responsável pela persistência:
+Repository - responsável pela persistência:
 
 ```ts
 import { User } from '../entities/user.entity';
@@ -168,7 +164,7 @@ export class UserRepository {
 }
 ```
 
-Service — contém lógica de negócio:
+Service - contém lógica de negócio:
 
 ```ts
 import { UserRepository } from '../repositories/user.repository';
@@ -192,7 +188,7 @@ export class UserService {
 }
 ```
 
-Controller — orquestra a requisição:
+Controller - orquestra a requisição:
 
 ```ts
 import { UserService } from '../services/user.service';

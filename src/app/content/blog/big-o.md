@@ -1,10 +1,6 @@
 ---
 title: O que é Big-O?
 description: Entenda notação Big-O e sua importância na análise de algoritmos e estruturas de dados.
-tldr:
-  - Explica complexidade de tempo/espaço e por que Big-O é independente de hardware
-  - Mostra principais classes de complexidade com exemplos comentados
-  - Destaca importância para entrevistas e decisões arquiteturais
 date: '2025-11-22'
 categories:
   - Algoritmos
@@ -15,11 +11,11 @@ published: true
 
 ## Introdução ao Big-O
 
-**Complexidade de um algoritmo** diz respeito à escalabilidade — como o algoritmo se comporta conforme aumentamos o tamanho de dados. 
+**Complexidade de um algoritmo** diz respeito à escalabilidade - como o algoritmo se comporta conforme aumentamos o tamanho de dados. 
 
 Quando falamos de complexidade, respondemos: **O quão bem (ou mal) esse algoritmo escala quando dados crescem?**
 
-> **Não é sobre velocidade ou tempo de execução** — é uma forma de analisar eficiência **independente de hardware ou linguagem**. A diferença entre Bubble Sort e Quick Sort é irrelevante com 10 elementos, mas **gritante com 1 milhão**.
+> **Não é sobre velocidade ou tempo de execução** - é uma forma de analisar eficiência **independente de hardware ou linguagem**. A diferença entre Bubble Sort e Quick Sort é irrelevante com 10 elementos, mas **gritante com 1 milhão**.
 
 ### Por que não medir tempo real?
 
@@ -54,7 +50,7 @@ function copiarArray(lista: number[]) {
 
 Detalhando as complexidades mais importantes e usadas em entrevistas técnicas.
 
-### O(1) — Constante
+### O(1) - Constante
 
 **O(1)** significa operações que **não dependem** do tamanho de entrada n. Exemplos: leitura de valor em hash table, acesso ao array por índice.
 
@@ -62,7 +58,7 @@ Detalhando as complexidades mais importantes e usadas em entrevistas técnicas.
 const x = arr[10];
 ```
 
-### O(n) — Linear
+### O(n) - Linear
 
 **O(n)** significa operações que crescem **proporcionalmente** ao tamanho n. Se n dobra, custo dobra.
 
@@ -93,7 +89,7 @@ function inclui(arr: number[], alvo: number) {
 
 > Pior caso: percorre todos n elementos → **O(n)**
 
-### O(n²) — Quadrática
+### O(n²) - Quadrática
 
 **O(n²)** descreve operações que crescem **ao quadrado**. Se n dobra, operações quadruplicam. Típico de **loops aninhados**:
 
@@ -107,7 +103,7 @@ for (let i = 0; i < n; i++) {
 
 **Exemplos:** Bubble Sort, Selection Sort, Insertion Sort
 
-### O(log n) — Logarítmica
+### O(log n) - Logarítmica
 
 **O(log n)** cresce **muito lentamente** conforme n aumenta. Exemplo clássico: **busca binária** em array de 1.000.000 elementos precisa apenas **~20 passos**!
 

@@ -12,7 +12,7 @@ export const aboutContent = {
       intro:
         "I am a backend engineer passionate about designing robust and scalable systems.",
       description:
-        "I'm a backend developer passionate about **system design**, **cloud infrastructure**, and **automation**. I build scalable APIs, implement Infrastructure as Code, and design reliable, maintainable systems that support growth. My main stack includes **Node.js**, **TypeScript**, **Go**, **PostgreSQL**, **Docker**, and **Linux**. I'm also a long-time Linux user — always experimenting with setups and optimizing environments to make development faster and cleaner. I believe in learning by building, continuously improving my craft through hands-on projects and real-world challenges.",
+        "I'm a backend developer passionate about **system design**, **cloud infrastructure**, and **automation**. I build scalable APIs, implement Infrastructure as Code, and design reliable, maintainable systems that support growth. My main stack includes **Node.js**, **TypeScript**, **Go**, **PostgreSQL**, **Docker**, and **Linux**. I'm also a long-time Linux user - always experimenting with setups and optimizing environments to make development faster and cleaner. I believe in learning by building, continuously improving my craft through hands-on projects and real-world challenges.",
     },
 
     // Work Section

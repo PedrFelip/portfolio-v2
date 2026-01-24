@@ -1,10 +1,6 @@
 ---
-title: Niri — um tiling baseado em scroll
+title: Niri - um tiling baseado em scroll
 description: Niri WM traz o conceito de scrollable tiling, janelas organizadas com navegação fluida, mantendo foco e produtividade.
-tldr:
-  - Introduz scrollable tiling e por que Niri não redimensiona janelas existentes
-  - Compara com outros tilers como Hyprland, destacando diferenças de workflow
-  - Resume features principais e configuração via arquivo .kdl
 date: '2025-11-02'
 categories:
   - NiriWM
@@ -15,7 +11,7 @@ published: true
 
 ## Introdução ao Niri Scrollable Tiling
 
-**Niri** é um compositor **Wayland** que organiza janelas em um layout que se estende horizontalmente infinitamente. Ao abrir nova janela, as existentes **nunca são redimensionadas** — você apenas rola horizontalmente para acessá-las.
+**Niri** é um compositor **Wayland** que organiza janelas em um layout que se estende horizontalmente infinitamente. Ao abrir nova janela, as existentes **nunca são redimensionadas** - você apenas rola horizontalmente para acessá-las.
 
 Isso permite navegação fluida através de **atalhos de teclado**, mantendo **foco e produtividade**. Escrito em **Rust**, o projeto é promissor e bem mantido.
 
@@ -27,7 +23,7 @@ Isso permite navegação fluida através de **atalhos de teclado**, mantendo **f
 
 ## O que diferencia Niri de outros window managers?
 
-O destaque do Niri é o **"scrollable tiling"** — um modelo onde o layout não é limitado por grade fixa, mas por sequência rolável de colunas. Isso muda completamente a experiência de multitarefa: você pode manter várias janelas abertas "fora da tela", sem bagunçar o layout atual.
+O destaque do Niri é o **"scrollable tiling"** - um modelo onde o layout não é limitado por grade fixa, mas por sequência rolável de colunas. Isso muda completamente a experiência de multitarefa: você pode manter várias janelas abertas "fora da tela", sem bagunçar o layout atual.
 
 ![Niri WM mostrando layout scrollable com janelas organizadas horizontalmente](/images/posts/niri/niri-hero.webp)
 
@@ -37,7 +33,7 @@ O destaque do Niri é o **"scrollable tiling"** — um modelo onde o layout não
 
 **Hyprland** redistribui espaço entre todas as janelas abertas ao abrir uma nova, causando **redimensionamentos indesejados** e perda de foco.
 
-**Niri** mantém tamanhos originais das janelas — você apenas rola horizontalmente para acessar adicionais, proporcionando **experiência mais fluida e focada**.
+**Niri** mantém tamanhos originais das janelas - você apenas rola horizontalmente para acessar adicionais, proporcionando **experiência mais fluida e focada**.
 
 ![Comparação do Hyprland mostrando redimensionamento automático de janelas](/images/posts/niri/hyprland-exemplo.webp)
 
@@ -56,20 +52,20 @@ No **Niri**, as janelas mantêm seus tamanhos originais, e você pode rolar hori
 
 ## Features principais do Niri
 
-- **Scrollable tiling** — Construído do zero com esse conceito em mente
-- **Workspaces dinâmicos** — Crie e organize áreas de trabalho conforme necessário
-- **Window overview** — Visualize todas janelas abertas e workspaces
-- **Window grouping** — Agrupe janelas em abas
-- **Configuração dinâmica** — Recarregamento de config sem reiniciar
-- **Gestos** — Suporte a touchpad e mouse gestures
+- **Scrollable tiling** - Construído do zero com esse conceito em mente
+- **Workspaces dinâmicos** - Crie e organize áreas de trabalho conforme necessário
+- **Window overview** - Visualize todas janelas abertas e workspaces
+- **Window grouping** - Agrupe janelas em abas
+- **Configuração dinâmica** - Recarregamento de config sem reiniciar
+- **Gestos** - Suporte a touchpad e mouse gestures
 
 ### Experimentar scrollable tiling
 
 Se não quer instalar Niri ainda, existem implementações parciais para outros ambientes:
 
-- **PaperWM** — Extensão para GNOME
-- **Karousel** — Extensão para KDE Plasma
-- **PaperWM.spoon** — Para macOS
+- **PaperWM** - Extensão para GNOME
+- **Karousel** - Extensão para KDE Plasma
+- **PaperWM.spoon** - Para macOS
 
 > Essas implementações são parciais, podem não ser tão polidas, mas são ótimas para testar o conceito.
 
@@ -79,7 +75,7 @@ Se não quer instalar Niri ainda, existem implementações parciais para outros 
 
 > Overview mostrando janelas abertas e organizadas em workspaces.
 
-Configuração é via arquivo **.kdl (Kotlin Data Language)** — simples e direto. A estrutura básica inclui seções para **atalhos**, **comportamento de janelas** e **preferências**.
+Configuração é via arquivo **.kdl (Kotlin Data Language)** - simples e direto. A estrutura básica inclui seções para **atalhos**, **comportamento de janelas** e **preferências**.
 
 ```kdl
 input { ... }

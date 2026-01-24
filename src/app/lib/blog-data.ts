@@ -88,7 +88,7 @@ export const getPostBySlug = cache((slug: string): BlogPost | null => {
     return {
       slug,
       title: data.title || "Untitled",
-      date: data.date || new Date().toISOString(),
+      date: data.date ? `${data.date}T12:00:00.000Z` : new Date().toISOString(),
       excerpt: data.excerpt || "",
       tags: data.tags || [],
       content,
