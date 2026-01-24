@@ -42,7 +42,7 @@ interface SocialLinkProps {
 const socialColorMap = {
   github:
     "hover:border-purple-500/50 hover:bg-purple-500/10 hover:text-purple-400",
-  linkedin: "hover:border-blue-600/50 hover:bg-blue-600/10 hover:text-blue-500",
+  linkedin: "hover:border-blue-700/60 hover:bg-blue-700/15 hover:text-blue-400",
   x: "hover:border-slate-400/50 hover:bg-slate-500/10 hover:text-slate-300",
   email: "hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400",
 };
@@ -84,7 +84,8 @@ export const Footer = memo(() => {
   const getLocalizedLink = useLocalizedLink();
 
   // Memoize navLinks array to prevent array recreation on every render
-  // Vercel best practice: cache arrays when used in maps
+  // Vercel best practice: cache arrays when used in maps (rerender-dependencies)
+  // Dependencies optimized: only include when language actually changes
   const navLinks = useMemo(
     () => [
       { href: "/", label: t.nav.home },
@@ -95,8 +96,9 @@ export const Footer = memo(() => {
     [t.nav.home, t.nav.about, t.nav.projects, t.nav.blog],
   );
 
-  // Memoize socialLinks array - static links don't depend on t
-  // Only icons and labels are language-agnostic
+  // Memoize socialLinks array - static links don't depend on props/state
+  // Vercel best practice: js-cache-function-results (cache static data)
+  // Empty dependency array is correct since these URLs never change
   const socialLinks = useMemo(
     () => [
       {
@@ -188,7 +190,7 @@ export const Footer = memo(() => {
           <MonoText className="text-muted-foreground">
             © {t.footer.year} Pedro Felipe
           </MonoText>
-          <MonoText className="text-faint">v2.9.8</MonoText>
+          <MonoText className="text-faint">v2.11.9</MonoText>
         </div>
       </div>
     </footer>
