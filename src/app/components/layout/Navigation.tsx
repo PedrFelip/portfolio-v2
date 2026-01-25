@@ -76,7 +76,7 @@ export const Navigation = memo(() => {
     <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/95">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between sm:h-18">
+        <div className="flex h-16 items-center justify-between md:h-18">
           <Link
             href={getLocalizedLink("/")}
             className="font-mono text-sm font-semibold tracking-tight text-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-primary"

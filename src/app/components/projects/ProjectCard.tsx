@@ -51,12 +51,12 @@ export const ProjectCard = memo(({ project }: ProjectCardProps) => {
     <Card className="group flex h-full flex-col">
       {/* Header: Title + Dates */}
       <CardHeader>
-        <div className="flex flex-col gap-1.5 sm:flex-row sm:items-start sm:justify-between">
-          <H3 className="pr-2 transition-colors duration-150">
+        <div className="flex flex-col gap-2 sm:gap-1.5 sm:flex-row sm:items-start sm:justify-between">
+          <H3 className="pr-2 transition-colors duration-150 break-words">
             {project.title}
           </H3>
           {project.dates && (
-            <MonoText className="whitespace-nowrap tabular-nums">
+            <MonoText className="whitespace-nowrap tabular-nums text-xs sm:text-sm">
               {project.dates}
             </MonoText>
           )}

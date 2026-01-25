@@ -31,11 +31,11 @@ export const ViewAllLink = ({
     <div className={`mt-8 sm:mt-12 lg:mt-16 text-center ${className}`}>
       <Link
         href={href}
-        className="group inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-foreground"
+        className="group inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-muted-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-foreground"
       >
         {label}
         <ArrowRight
-          className="h-3.5 w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:translate-x-0.5"
+          className="h-3 w-3 sm:h-3.5 sm:w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:translate-x-0.5"
           aria-hidden="true"
         />
       </Link>

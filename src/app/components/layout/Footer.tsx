@@ -187,10 +187,12 @@ export const Footer = memo(() => {
 
         {/* Bottom Bar */}
         <div className="mt-6 flex flex-col items-start gap-4 border-t border-border pt-6 sm:items-center sm:justify-between sm:gap-0 sm:pt-8">
-          <MonoText className="text-muted-foreground">
+          <MonoText className="text-xs sm:text-sm text-muted-foreground">
             © {t.footer.year} Pedro Felipe
           </MonoText>
-          <MonoText className="text-faint">v2.11.11</MonoText>
+          <MonoText className="text-xs sm:text-sm text-faint">
+            v2.11.11
+          </MonoText>
         </div>
       </div>
     </footer>

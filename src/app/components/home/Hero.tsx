@@ -71,7 +71,7 @@ export const Hero = memo(
     techStack,
   }: HeroProps) => {
     return (
-      <section className="py-16 sm:py-20 lg:py-24">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Greeting */}
           <div className="mb-4 font-mono text-sm text-muted-foreground animate-in-up">
@@ -87,7 +87,7 @@ export const Hero = memo(
           </P>
 
           {/* CTAs */}
-          <div className="mb-8 flex flex-col gap-3 sm:mb-10 sm:flex-row sm:gap-4 animate-in-up animate-delay-200">
+          <div className="mb-8 flex flex-col gap-3 sm:mb-10 sm:flex-row sm:gap-4 sm:items-center animate-in-up animate-delay-200">
             <Button asChild size="lg">
               <Link href={primaryHref} className="group">
                 {ctaPrimary}
