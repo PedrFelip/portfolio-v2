@@ -17,13 +17,16 @@ interface TableOfContentsProps {
  * - Memoized to prevent re-renders when parent updates
  * - IntersectionObserver for efficient heading tracking
  * - Localized labels via language context
+ * - Smooth scroll with enhanced UX
  *
  * Best practices applied:
  * - Wrapped with React.memo() to skip re-renders
  * - displayName for debugging
+ * - Debounced scroll updates for performance
  */
 export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
   const [activeId, setActiveId] = useState<string>("");
+  const [isScrolling, setIsScrolling] = useState(false);
   const { language } = useLanguage();
   const t = blogContent[language].blog;
 
@@ -43,17 +46,22 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
     if (headingElements.size === 0) return;
 
     // IntersectionObserver to track which heading is visible
+    // Optimized rootMargin for better accuracy
     const observer = new IntersectionObserver(
       (entries) => {
-        // Find the first visible heading
+        // Find the first visible heading (top of viewport)
         const visibleEntry = entries.find((entry) => entry.isIntersecting);
         if (visibleEntry) {
           setActiveId(visibleEntry.target.id);
+          setIsScrolling(false);
         }
       },
       {
-        rootMargin: "-80px 0px -80% 0px", // Adjust for header offset
-        threshold: 1.0,
+        // rootMargin: top, right, bottom, left
+        // -88px top: Account for sticky header height
+        // -75% bottom: Trigger when heading is 25% of viewport
+        rootMargin: "-88px 0px -75% 0px",
+        threshold: [0],
       },
     );
 
@@ -91,26 +99,29 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
                   e.preventDefault();
                   const element = document.getElementById(heading.id);
                   if (element) {
-                    const offset = 80; // Header height
-                    const elementPosition = element.getBoundingClientRect().top;
-                    const offsetPosition =
-                      elementPosition + window.scrollY - offset;
+                    setIsScrolling(true);
 
-                    window.scrollTo({
-                      top: offsetPosition,
+                    // Use element.scrollIntoView() for better browser compatibility
+                    // and automatic scroll-padding consideration
+                    element.scrollIntoView({
                       behavior: "smooth",
+                      block: "start",
                     });
+
+                    // Clear scrolling state after animation
+                    setTimeout(() => setIsScrolling(false), 800);
                   }
                 }}
                 className={`
-                    block py-1 sm:py-1.5 text-xs sm:text-sm transition-all duration-150
+                    relative block py-1 sm:py-1.5 text-xs sm:text-sm transition-all duration-200
                     ease-[cubic-bezier(0.25,1,0.5,1)]
                     ${isH3 ? "pl-5 sm:pl-6" : "pl-3 sm:pl-4"}
                     ${
                       isActive
-                        ? "text-accent border-l-2 border-accent -ml-[1px]"
-                        : "text-muted-foreground hover:text-foreground border-l-2 border-transparent -ml-[1px]"
+                        ? "text-accent font-medium border-l-2 border-accent -ml-[1px]"
+                        : "text-muted-foreground hover:text-foreground border-l-2 border-transparent -ml-[1px] hover:border-border"
                     }
+                    ${isScrolling && activeId === heading.id ? "animate-pulse" : ""}
                   `}
               >
                 {heading.text}

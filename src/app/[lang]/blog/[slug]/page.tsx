@@ -71,16 +71,27 @@ const MDX_COMPONENTS = {
   td: ({ children }: { children: React.ReactNode }) => (
     <MDXTableCell>{children}</MDXTableCell>
   ),
+  h1: ({ children }: { children: React.ReactNode }) => {
+    const id = slugify(String(children));
+    return (
+      <H1
+        id={id}
+        className="scroll-mt-20 mb-6 mt-12 text-2xl sm:text-3xl md:text-4xl transition-all duration-300"
+      >
+        {children}
+      </H1>
+    );
+  },
   h2: ({ children }: { children: React.ReactNode }) => {
     const id = slugify(String(children));
     return (
       <H2
         id={id}
-        className="scroll-mt-20 group relative mb-4 mt-10 border-b border-border pb-2 transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent"
+        className="scroll-mt-20 group relative mb-4 mt-10 border-b border-border pb-2 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent focus-visible:outline-none"
       >
-        <span className="relative">
+        <span className="relative flex items-center gap-2">
+          <span className="absolute -left-5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-accent opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
           {children}
-          <span className="absolute -left-4 top-0 bottom-0 w-1 bg-accent rounded-full opacity-0 transition-opacity duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:opacity-100" />
         </span>
       </H2>
     );
@@ -90,9 +101,14 @@ const MDX_COMPONENTS = {
     return (
       <H3
         id={id}
-        className="scroll-mt-20 group relative mb-3 mt-8 transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-accent"
+        className="scroll-mt-20 group relative mb-3 mt-8 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-accent hover:pl-2 focus-visible:outline-none"
       >
-        {children}
+        <span className="relative inline-block">
+          <span className="absolute -left-3 opacity-0 transition-opacity duration-200 group-hover:opacity-60 text-accent">
+            →
+          </span>
+          {children}
+        </span>
       </H3>
     );
   },

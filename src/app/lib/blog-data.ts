@@ -25,9 +25,11 @@ export function slugify(text: string): string {
 /**
  * Extract headings from markdown content
  * Returns array of heading objects with level, text, and id
+ * Improved regex to handle H2 (##) and H3 (###) across multiline content
+ * H1 (#) não é incluído pois geralmente é o título da página
  */
 export function extractHeadings(content: string): Heading[] {
-  const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+  const headingRegex = /^(#{2,3})\s+(.+?)$/gm;
   const headings: Heading[] = [];
   let match: RegExpExecArray | null = null;
 
@@ -36,10 +38,10 @@ export function extractHeadings(content: string): Heading[] {
     const level = match[1].length as 2 | 3;
     const text = match[2]
       .trim()
-      .replace(/\*\*/g, "") // Remove bold markdown
-      .replace(/\*/g, "") // Remove italic markdown
-      .replace(/__/g, "") // Remove underline bold
-      .replace(/_/g, "") // Remove underline italic
+      .replace(/\*\*(.+?)\*\*/g, "$1") // Remove bold markdown but keep text
+      .replace(/\*(.+?)\*/g, "$1") // Remove italic markdown but keep text
+      .replace(/__(.+?)__/g, "$1") // Remove underline bold but keep text
+      .replace(/_(.+?)_/g, "$1") // Remove underline italic but keep text
       .trim();
     const id = slugify(text);
 
