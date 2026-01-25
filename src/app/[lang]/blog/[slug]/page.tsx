@@ -87,11 +87,11 @@ const MDX_COMPONENTS = {
     return (
       <H2
         id={id}
-        className="scroll-mt-20 group relative mb-4 mt-10 border-b border-border pb-2 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent focus-visible:outline-none"
+        className="scroll-mt-20 group relative mb-4 mt-10 border-b border-border pb-2 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent"
       >
-        <span className="relative flex items-center gap-2">
-          <span className="absolute -left-5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-accent opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+        <span className="relative">
           {children}
+          <span className="absolute -left-4 top-0 bottom-0 w-1 bg-accent rounded-full opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
         </span>
       </H2>
     );
@@ -101,14 +101,9 @@ const MDX_COMPONENTS = {
     return (
       <H3
         id={id}
-        className="scroll-mt-20 group relative mb-3 mt-8 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-accent hover:pl-2 focus-visible:outline-none"
+        className="scroll-mt-20 group relative mb-3 mt-8 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-accent"
       >
-        <span className="relative inline-block">
-          <span className="absolute -left-3 opacity-0 transition-opacity duration-200 group-hover:opacity-60 text-accent">
-            →
-          </span>
-          {children}
-        </span>
+        {children}
       </H3>
     );
   },
