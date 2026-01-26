@@ -81,6 +81,8 @@ A dependência "natural" é do módulo de **alto nível** para o módulo de **ba
 Mas o **DIP inverte essa dependência**. Ambos os módulos devem depender de **abstrações**. Ou seja, o módulo de alto nível não deve conhecer os detalhes do módulo de baixo nível, e vice-versa.
 
 
+![Fluxo da dependencia](/images/posts/dip/dip.webp) 
+
 ### Exemplo no sistema de pagamentos fictício
 
 ```ts
