@@ -79,7 +79,7 @@ export const Navigation = memo(() => {
         <div className="flex h-16 items-center justify-between md:h-18">
           <Link
             href={getLocalizedLink("/")}
-            className="font-mono text-sm font-semibold tracking-tight text-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-primary"
+            className="font-mono text-sm font-semibold tracking-tight text-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-accent"
           >
             Pedro Felipe
           </Link>
