@@ -28,6 +28,30 @@ interface BlogPostPageProps {
 }
 
 /**
+ * Extract text content from React children
+ * Handles nested React elements (e.g., <strong>, <em>)
+ * Best Practice 7.2 - Build Index Maps for Repeated Lookups
+ */
+function extractTextContent(children: React.ReactNode): string {
+  if (typeof children === "string" || typeof children === "number") {
+    return String(children);
+  }
+
+  if (Array.isArray(children)) {
+    return children.map(extractTextContent).join("");
+  }
+
+  if (children && typeof children === "object" && "children" in children) {
+    const childrenValue = (children as { children?: React.ReactNode }).children;
+    if (childrenValue) {
+      return extractTextContent(childrenValue);
+    }
+  }
+
+  return "";
+}
+
+/**
  * MDX Components - Performance Optimization
  *
  * Best practices:
@@ -47,12 +71,9 @@ const MDX_COMPONENTS = {
     children: React.ReactNode;
     className?: string;
   }) => {
-    // Se for inline code (dentro de parágrafos), não renderiza aqui
-    // Se for dentro de pre, rehypeHighlight já cuidou
     if (className?.startsWith("hljs")) {
       return <code className={className}>{children}</code>;
     }
-    // Inline code styling (4px grid: px-1.5 = 6px, py-0.5 = 2px)
     return (
       <code className="font-mono text-xs sm:text-sm bg-muted px-1.5 py-0.5 rounded border border-border text-foreground">
         {children}
@@ -76,18 +97,19 @@ const MDX_COMPONENTS = {
     return (
       <H1
         id={id}
-        className="scroll-mt-20 mb-6 mt-12 text-2xl sm:text-3xl md:text-4xl transition-all duration-300"
+        className="mb-6 mt-12 text-2xl sm:text-3xl md:text-4xl transition-all duration-300"
       >
         {children}
       </H1>
     );
   },
   h2: ({ children }: { children: React.ReactNode }) => {
-    const id = slugify(String(children));
+    const text = extractTextContent(children);
+    const id = slugify(text);
     return (
       <H2
         id={id}
-        className="scroll-mt-20 group relative mb-4 mt-10 border-b border-border pb-2 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent"
+        className="group relative mb-4 mt-10 border-b border-border pb-2 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent"
       >
         <span className="relative">
           {children}
@@ -97,11 +119,12 @@ const MDX_COMPONENTS = {
     );
   },
   h3: ({ children }: { children: React.ReactNode }) => {
-    const id = slugify(String(children));
+    const text = extractTextContent(children);
+    const id = slugify(text);
     return (
       <H3
         id={id}
-        className="scroll-mt-20 group relative mb-3 mt-8 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-accent"
+        className="group relative mb-3 mt-8 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-accent"
       >
         {children}
       </H3>
