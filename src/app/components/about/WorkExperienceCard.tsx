@@ -54,7 +54,7 @@ export const WorkExperienceCard = memo(
                     href={experience.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-foreground"
+                    className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-foreground"
                     aria-label={`${experience.company} - Visit website`}
                   >
                     {experience.company}
@@ -83,7 +83,7 @@ export const WorkExperienceCard = memo(
                       key={item}
                       className="mb-2 flex items-start gap-2 last:mb-0"
                     >
-                      <span className="mt-0.5 text-muted-foreground/60">•</span>
+                      <span className="mt-1 text-muted-foreground/60">•</span>
                       <span className="flex-1">
                         {item.trim()}
                         {item.trim() && !item.endsWith(".") ? "." : ""}

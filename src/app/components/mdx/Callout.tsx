@@ -73,7 +73,7 @@ export const Callout = memo(
           style.border,
         )}
       >
-        <div className={cn("mt-0.5 flex-shrink-0", style.color)}>
+        <div className={cn("mt-1 flex-shrink-0", style.color)}>
           {style.icon}
         </div>
         <div className="flex-1">

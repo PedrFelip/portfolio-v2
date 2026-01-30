@@ -19,6 +19,7 @@ import {
 import { Badge, H1, H2, H3 } from "@/components/ui";
 import { getAllPostSlugs, getPostBySlug } from "@/lib/blog-data";
 import { blogContent } from "@/lib/content/blog-content";
+import type { Heading } from "@/types/portfolio";
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -28,47 +29,92 @@ interface BlogPostPageProps {
 }
 
 /**
- * MDX Components - Performance Optimization
- *
- * Best practices:
- * - Static components defined outside to prevent re-creation
- * - Heading components created inside page component to access deduplicated IDs
- * - Improves React reconciliation and rendering performance
- * - Ensures TOC and rendered headings have matching IDs (Vercel 3.2 - Avoid Duplicate Serialization)
+ * Static MDX Components - defined outside component to prevent re-creation
+ * These never change between renders (Vercel 3.1 - Hoist Static Definitions)
  */
-const STATIC_MDX_COMPONENTS = {
-  pre: ({ children }: { children: React.ReactNode }) => (
-    <CodeBlockWrapper>{children}</CodeBlockWrapper>
-  ),
-  code: ({
-    children,
-    className,
-  }: {
-    children: React.ReactNode;
-    className?: string;
-  }) => {
-    if (className?.startsWith("hljs")) {
-      return <code className={className}>{children}</code>;
+const PreComponent = ({ children }: { children: React.ReactNode }) => (
+  <CodeBlockWrapper>{children}</CodeBlockWrapper>
+);
+
+const CodeComponent = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  if (className?.startsWith("hljs")) {
+    return <code className={className}>{children}</code>;
+  }
+  return (
+    <code className="font-mono text-xs sm:text-sm bg-muted px-2 py-1 rounded border border-border text-foreground">
+      {children}
+    </code>
+  );
+};
+
+const TableCellHeader = ({ children }: { children: React.ReactNode }) => (
+  <MDXTableCell isHeader>{children}</MDXTableCell>
+);
+
+const TableCell = ({ children }: { children: React.ReactNode }) => (
+  <MDXTableCell>{children}</MDXTableCell>
+);
+
+/**
+ * Create heading components with sequential ID assignment
+ * Uses closure to track index without mutating external state
+ */
+const createHeadingComponents = (headings: Heading[]) => {
+  // Create index tracker inside closure
+  let index = 0;
+
+  const getNextId = (): string => {
+    if (index < headings.length) {
+      return headings[index++].id;
     }
-    return (
-      <code className="font-mono text-xs sm:text-sm bg-muted px-1.5 py-0.5 rounded border border-border text-foreground">
-        {children}
-      </code>
-    );
-  },
-  Callout,
-  Figure,
-  table: MDXTable,
-  thead: MDXTableHead,
-  tbody: MDXTableBody,
-  tr: MDXTableRow,
-  th: ({ children }: { children: React.ReactNode }) => (
-    <MDXTableCell isHeader>{children}</MDXTableCell>
-  ),
-  td: ({ children }: { children: React.ReactNode }) => (
-    <MDXTableCell>{children}</MDXTableCell>
-  ),
-} as const;
+    return `heading-${index++}`;
+  };
+
+  return {
+    h1: ({ children }: { children: React.ReactNode }) => {
+      const id = getNextId();
+      return (
+        <H1
+          id={id}
+          className="mb-6 mt-12 text-2xl sm:text-3xl md:text-4xl transition-all duration-300"
+        >
+          {children}
+        </H1>
+      );
+    },
+    h2: ({ children }: { children: React.ReactNode }) => {
+      const id = getNextId();
+      return (
+        <H2
+          id={id}
+          className="group relative mb-4 mt-10 border-b border-border pb-2 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent"
+        >
+          <span className="relative">
+            {children}
+            <span className="absolute -left-4 top-0 bottom-0 w-1 bg-accent rounded-full opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+          </span>
+        </H2>
+      );
+    },
+    h3: ({ children }: { children: React.ReactNode }) => {
+      const id = getNextId();
+      return (
+        <H3
+          id={id}
+          className="group relative mb-3 mt-8 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-accent"
+        >
+          {children}
+        </H3>
+      );
+    },
+  };
+};
 
 /**
  * BlogPostPage component
@@ -82,6 +128,7 @@ const STATIC_MDX_COMPONENTS = {
  * - Static generation with ISR fallback for new posts
  * - Optimized generateStaticParams: only generate recent posts at build time
  * - Server-side caching for post data
+ * - Hoisted static MDX components prevent re-creation
  */
 
 // Cache individual post for 24 hours (ISR)
@@ -109,61 +156,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  // Heading ID assignment based on order - ensures TOC and rendered headings match perfectly
-  // Uses sequential index to get ID from post.headings array (more reliable than text matching)
-  const headingsList = post.headings || [];
-  let headingIndex = 0;
+  // Create heading components with sequential ID assignment
+  // Factory function ensures each heading gets the correct ID in order
+  const headingComponents = createHeadingComponents(post.headings || []);
 
-  const getNextHeadingId = (): string => {
-    if (headingIndex < headingsList.length) {
-      const id = headingsList[headingIndex].id;
-      headingIndex++;
-      return id;
-    }
-    // Fallback - should never happen
-    return `heading-${headingIndex++}`;
-  };
-
-  // MDX Components with sequential ID assignment
-  // Each heading component gets the next ID from the headings array in order
+  // Combine static and dynamic components
   const MDX_COMPONENTS = {
-    ...STATIC_MDX_COMPONENTS,
-    h1: ({ children }: { children: React.ReactNode }) => {
-      const id = getNextHeadingId();
-      return (
-        <H1
-          id={id}
-          className="mb-6 mt-12 text-2xl sm:text-3xl md:text-4xl transition-all duration-300"
-        >
-          {children}
-        </H1>
-      );
-    },
-    h2: ({ children }: { children: React.ReactNode }) => {
-      const id = getNextHeadingId();
-      return (
-        <H2
-          id={id}
-          className="group relative mb-4 mt-10 border-b border-border pb-2 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent"
-        >
-          <span className="relative">
-            {children}
-            <span className="absolute -left-4 top-0 bottom-0 w-1 bg-accent rounded-full opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
-          </span>
-        </H2>
-      );
-    },
-    h3: ({ children }: { children: React.ReactNode }) => {
-      const id = getNextHeadingId();
-      return (
-        <H3
-          id={id}
-          className="group relative mb-3 mt-8 transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-accent"
-        >
-          {children}
-        </H3>
-      );
-    },
+    pre: PreComponent,
+    code: CodeComponent,
+    Callout,
+    Figure,
+    table: MDXTable,
+    thead: MDXTableHead,
+    tbody: MDXTableBody,
+    tr: MDXTableRow,
+    th: TableCellHeader,
+    td: TableCell,
+    ...headingComponents,
   };
 
   // Format date
@@ -216,7 +225,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
               {/* Meta Information with icons and hover effects */}
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm font-mono text-muted-foreground border-b border-border pb-3 sm:pb-4">
-                <div className="group/meta flex items-center gap-1.5 sm:gap-2 transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-accent">
+                <div className="group/meta flex items-center gap-2 transition-colors duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-accent">
                   <Calendar
                     className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover/meta:scale-110"
                     aria-hidden="true"
@@ -227,7 +236,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
               {/* Tags with stagger animation */}
               {post.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-3 sm:mt-4">
+                <div className="flex flex-wrap gap-2 mt-3 sm:mt-4">
                   {post.tags.map((tag, index) => (
                     <Badge
                       key={tag}

@@ -61,7 +61,7 @@ export const TimelinePost = memo(
             <div className="absolute inset-0 rounded-full bg-accent opacity-0 transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:opacity-20 group-hover:scale-[2.5]" />
 
             {/* Main dot */}
-            <div className="relative h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full border-2 border-accent bg-background transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-125 group-hover:bg-accent group-hover:shadow-lg group-hover:shadow-accent/40" />
+            <div className="relative h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full border-2 border-accent bg-background transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-125 group-hover:bg-accent" />
           </div>
 
           {/* Connecting Line with gradient */}
@@ -106,7 +106,7 @@ export const TimelinePost = memo(
 
               {/* Tags */}
               {post.tags.length > 0 && (
-                <div className="mb-3 sm:mb-4 flex flex-wrap gap-1.5 sm:gap-2">
+                <div className="mb-3 sm:mb-4 flex flex-wrap gap-2 sm:gap-2">
                   {post.tags.slice(0, 3).map((tag, index) => (
                     <Badge
                       key={tag}
@@ -127,7 +127,7 @@ export const TimelinePost = memo(
               )}
 
               {/* Read More Indicator with enhanced hover */}
-              <div className="inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:text-accent group-hover:gap-2 sm:group-hover:gap-3">
+              <div className="inline-flex items-center gap-2 sm:gap-2 text-xs sm:text-sm font-medium text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:text-accent group-hover:gap-2 sm:group-hover:gap-3">
                 <span className="relative">
                   {t.blog.readMore}
                   <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:w-full" />

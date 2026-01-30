@@ -50,7 +50,7 @@ export const CodeBlock = memo(({ children, className }: CodeBlockProps) => {
         type="button"
         onClick={copyToClipboard}
         disabled={isPending}
-        className="absolute right-3 top-3 flex items-center gap-1.5 rounded border border-border bg-background px-2 sm:px-2.5 py-1 sm:py-1.5 font-mono text-xs text-muted-foreground opacity-0 transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:text-foreground hover:bg-muted/50 group-hover:opacity-100 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="absolute right-3 top-3 flex items-center gap-1.5 rounded border border-border bg-background px-2 sm:px-3 py-1 sm:py-2 font-mono text-xs text-muted-foreground opacity-0 transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground hover:text-foreground hover:bg-muted/50 group-hover:opacity-100 disabled:opacity-50 disabled:cursor-not-allowed"
         aria-label={copied ? "Copied!" : "Copy code"}
       >
         {copied ? (

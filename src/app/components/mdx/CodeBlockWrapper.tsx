@@ -11,7 +11,7 @@ interface CodeBlockWrapperProps {
  * CodeBlockWrapper component for MDX code blocks
  *
  * Design principles (AGENTS.md):
- * - 4px grid spacing (p-1.5 = 6px, p-4 = 16px)
+ * - 4px grid spacing (p-2 = 8px, p-4 = 16px)
  * - Borders-only approach (no shadows)
  * - Animation: 150-200ms with cubic-bezier easing
  * - Isolated controls: copy button feels like crafted object
@@ -63,7 +63,7 @@ export const CodeBlockWrapper = memo(({ children }: CodeBlockWrapperProps) => {
       <button
         type="button"
         onClick={copyToClipboard}
-        className="absolute right-3 top-3 rounded border border-border bg-card p-1.5 text-muted-foreground opacity-0 transition-[opacity,color] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-foreground group-hover:opacity-100 motion-reduce:transition-none"
+        className="absolute right-3 top-3 rounded border border-border bg-card p-2 text-muted-foreground opacity-0 transition-[opacity,color] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:text-foreground group-hover:opacity-100 motion-reduce:transition-none"
         title="Copy code"
         aria-label={copied ? "Code copied" : "Copy code"}
       >

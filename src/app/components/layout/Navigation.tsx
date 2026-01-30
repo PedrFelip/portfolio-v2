@@ -111,7 +111,7 @@ export const Navigation = memo(() => {
               type="button"
               onClick={toggleLanguage}
               disabled={isPending}
-              className="inline-flex min-h-[44px] items-center gap-2 rounded border border-border bg-background px-3.5 py-2 font-mono text-xs font-medium text-muted-foreground transition-[border-color,background-color,color,transform,opacity] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground/50 hover:text-foreground hover:bg-muted/60 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed motion-reduce:transition-none"
+              className="inline-flex min-h-[44px] items-center gap-2 rounded border border-border bg-background px-3 py-2 font-mono text-xs font-medium text-muted-foreground transition-[border-color,background-color,color,transform,opacity] duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-foreground/50 hover:text-foreground hover:bg-muted/60 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed motion-reduce:transition-none"
               aria-label={t.nav.language}
             >
               <span>{language === "en" ? "EN" : "PT"}</span>

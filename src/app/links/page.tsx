@@ -138,7 +138,7 @@ const LinkItem = memo(({ label, url, icon, description }: LinkItemProps) => {
       key={label}
       {...linkProps}
       aria-label={`Visit ${label}`}
-      className={`group relative flex items-center gap-3 rounded-lg border border-border bg-card p-3 sm:p-4 transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:scale-[1.02] hover:shadow-sm ${colors.border} ${colors.bg}`}
+      className={`group relative flex items-center gap-3 rounded-lg border border-border bg-card p-3 sm:p-4 transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:scale-[1.02] ${colors.border} ${colors.bg}`}
     >
       {/* Icon container with enhanced hover */}
       <div className="relative flex flex-shrink-0 items-center justify-center">
@@ -150,7 +150,7 @@ const LinkItem = memo(({ label, url, icon, description }: LinkItemProps) => {
       </div>
 
       {/* Content section */}
-      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+      <div className="flex min-w-0 flex-1 flex-col gap-1">
         <span className="text-sm font-semibold tracking-tight text-foreground transition-colors duration-150 group-hover:text-foreground">
           {label}
         </span>

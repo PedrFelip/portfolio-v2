@@ -19,7 +19,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-header"
-      className={cn("mb-3 sm:mb-4 flex flex-col gap-1.5", className)}
+      className={cn("mb-3 sm:mb-4 flex flex-col gap-2", className)}
       {...props}
     />
   );

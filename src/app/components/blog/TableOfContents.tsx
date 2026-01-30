@@ -43,11 +43,16 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
   const headingPositionsRef = useRef<Map<string, number>>(new Map());
   const isScrollingRef = useRef(false);
   const observerRef = useRef<MutationObserver | null>(null);
+  const activeIdRef = useRef(activeId);
 
-  // Sync isScrolling ref with state (Vercel 5.2 - useLatest pattern)
+  // Sync refs with state (Vercel 5.2 - useLatest pattern)
   useEffect(() => {
     isScrollingRef.current = isScrolling;
   }, [isScrolling]);
+
+  useEffect(() => {
+    activeIdRef.current = activeId;
+  }, [activeId]);
 
   /**
    * Update cached heading positions
@@ -111,7 +116,7 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
       requestAnimationFrame(() => {
         const newActiveId = findActiveHeading();
 
-        if (newActiveId && newActiveId !== activeId) {
+        if (newActiveId && newActiveId !== activeIdRef.current) {
           startTransition(() => {
             setActiveId(newActiveId);
           });
@@ -125,7 +130,7 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
     const handleResize = () => {
       updateHeadingPositions();
       const newActiveId = findActiveHeading();
-      if (newActiveId !== activeId) {
+      if (newActiveId !== activeIdRef.current) {
         startTransition(() => setActiveId(newActiveId));
       }
     };
@@ -159,7 +164,7 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
       observerRef.current?.disconnect();
       observerRef.current = null;
     };
-  }, [headings, findActiveHeading, updateHeadingPositions, activeId]);
+  }, [headings, findActiveHeading, updateHeadingPositions]);
 
   /**
    * Sync with URL hash on initial load
@@ -215,8 +220,6 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
         passive: true,
         once: true,
       });
-
-      setTimeout(() => setIsScrolling(false), 1000);
     },
     [updateHeadingPositions],
   );
@@ -235,7 +238,7 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
             href={`#${heading.id}`}
             onClick={(e) => handleClick(e, heading.id)}
             className={`
-              relative block py-1 sm:py-1.5 text-xs sm:text-sm transition-all duration-200
+              relative block py-1 sm:py-2 text-xs sm:text-sm transition-all duration-200
               ease-[cubic-bezier(0.25,1,0.5,1)]
               ${isH3 ? "pl-5 sm:pl-6" : "pl-3 sm:pl-4"}
               ${

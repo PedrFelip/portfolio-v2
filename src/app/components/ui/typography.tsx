@@ -178,7 +178,7 @@ export const Code = React.forwardRef<HTMLElement, TypographyProps>(
       <Component
         ref={ref}
         className={cn(
-          "relative rounded border border-border bg-muted px-1.5 py-0.5",
+          "relative rounded border border-border bg-muted px-2 py-1",
           "font-mono text-xs",
           className,
         )}

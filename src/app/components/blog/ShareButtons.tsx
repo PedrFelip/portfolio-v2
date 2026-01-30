@@ -2,6 +2,7 @@
 
 import {
   memo,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -76,7 +77,7 @@ export const ShareButtons = memo(
       };
     }, []);
 
-    const copyToClipboard = async () => {
+    const copyToClipboard = useCallback(async () => {
       try {
         // ✅ Clear previous timer if exists
         if (timeoutRef.current) {
@@ -97,7 +98,7 @@ export const ShareButtons = memo(
       } catch (err) {
         console.error("Failed to copy:", err);
       }
-    };
+    }, [url]);
 
     return (
       <div className="flex flex-col gap-2 sm:gap-3">
@@ -107,13 +108,13 @@ export const ShareButtons = memo(
         </MonoText>
 
         {/* Share buttons */}
-        <div className="flex flex-wrap gap-1.5 sm:gap-2">
+        <div className="flex flex-wrap gap-2">
           {/* Twitter/X */}
           <a
             href={shareLinks.twitter}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-lg border border-border bg-card px-2.5 sm:px-3 py-1.5 sm:py-2 text-sm text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent hover:bg-accent/10 hover:text-accent"
+            className="group inline-flex items-center gap-1 sm:gap-2 rounded-lg border border-border bg-card px-2 sm:px-3 py-2 sm:py-2 text-sm text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent hover:bg-accent/10 hover:text-accent"
             aria-label={`${t.shareOn} X (Twitter)`}
           >
             <X className="h-3 w-3 sm:h-3.5 sm:w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-110" />
@@ -125,7 +126,7 @@ export const ShareButtons = memo(
             href={shareLinks.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-lg border border-border bg-card px-2.5 sm:px-3 py-1.5 sm:py-2 text-sm text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent hover:bg-accent/10 hover:text-accent"
+            className="group inline-flex items-center gap-1 sm:gap-2 rounded-lg border border-border bg-card px-2 sm:px-3 py-2 sm:py-2 text-sm text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent hover:bg-accent/10 hover:text-accent"
             aria-label={`${t.shareOn} LinkedIn`}
           >
             <Linkedin className="h-3 w-3 sm:h-3.5 sm:w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-110" />
@@ -135,7 +136,7 @@ export const ShareButtons = memo(
           {/* Email */}
           <a
             href={shareLinks.email}
-            className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-lg border border-border bg-card px-2.5 sm:px-3 py-1.5 sm:py-2 text-sm text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent hover:bg-accent/10 hover:text-accent"
+            className="group inline-flex items-center gap-1 sm:gap-2 rounded-lg border border-border bg-card px-2 sm:px-3 py-2 sm:py-2 text-sm text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent hover:bg-accent/10 hover:text-accent"
             aria-label={`${t.shareVia} Email`}
           >
             <Mail className="h-3 w-3 sm:h-3.5 sm:w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-110" />
@@ -147,7 +148,7 @@ export const ShareButtons = memo(
             type="button"
             onClick={copyToClipboard}
             disabled={isPending}
-            className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-lg border border-border bg-card px-2.5 sm:px-3 py-1.5 sm:py-2 text-sm text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent hover:bg-accent/10 hover:text-accent disabled:opacity-50 disabled:cursor-not-allowed"
+            className="group inline-flex items-center gap-1 sm:gap-2 rounded-lg border border-border bg-card px-2 sm:px-3 py-2 sm:py-2 text-sm text-muted-foreground transition-all duration-150 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-accent hover:bg-accent/10 hover:text-accent disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label={copied ? t.linkCopied : t.copyLink}
           >
             {copied ? (
