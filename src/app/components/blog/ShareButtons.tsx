@@ -1,6 +1,13 @@
 "use client";
 
-import { memo, useMemo, useState, useTransition } from "react";
+import {
+  memo,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import { MonoText } from "@/components/ui";
 import {
   Linkedin,
@@ -35,6 +42,7 @@ interface ShareButtonsProps {
  * - Accessible with aria-labels
  * - Non-blocking copy operation
  * - useTransition for state updates (Vercel best practice)
+ * - Timer cleanup on unmount (Vercel 5.1)
  */
 export const ShareButtons = memo(
   ({ title, url, description = "" }: ShareButtonsProps) => {
@@ -42,6 +50,8 @@ export const ShareButtons = memo(
     const [isPending, startTransition] = useTransition();
     const { language } = useLanguage();
     const t = blogContent[language].blog;
+    // ✅ Ref to store timeout ID for cleanup (Vercel 5.1)
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     // Memoize share URLs to avoid recreating URL strings on every render
     // Cache hit when title, url, description don't change
@@ -57,14 +67,32 @@ export const ShareButtons = memo(
       };
     }, [title, url, description]);
 
+    // ✅ Cleanup timer on unmount to prevent memory leaks and state updates on unmounted component
+    useEffect(() => {
+      return () => {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+      };
+    }, []);
+
     const copyToClipboard = async () => {
       try {
+        // ✅ Clear previous timer if exists
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = null;
+        }
+
         await navigator.clipboard.writeText(url);
         // Use startTransition to mark state update as non-blocking
         // Prevents UI blocking while clipboard write completes
         startTransition(() => {
           setCopied(true);
-          setTimeout(() => setCopied(false), 2000);
+          timeoutRef.current = setTimeout(() => {
+            setCopied(false);
+            timeoutRef.current = null;
+          }, 2000);
         });
       } catch (err) {
         console.error("Failed to copy:", err);

@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import { Check, Copy } from "@/components/ui/icons";
 
 interface CodeBlockWrapperProps {
@@ -22,38 +22,39 @@ interface CodeBlockWrapperProps {
  * - Accessible copy button with visual feedback
  * - Respects reduced motion preference
  * - Clean group hover interaction
+ * - useRef for efficient DOM access (Vercel 5.2)
+ * - useCallback for stable function reference
  */
 export const CodeBlockWrapper = memo(({ children }: CodeBlockWrapperProps) => {
   const [copied, setCopied] = useState(false);
+  // ✅ useRef for O(1) DOM access instead of querySelector (Vercel 5.2)
+  const preRef = useRef<HTMLPreElement>(null);
 
-  const copyToClipboard = async () => {
+  // ✅ useCallback for stable function reference (Vercel 5.3)
+  const copyToClipboard = useCallback(async () => {
     try {
-      // Verificar se clipboard API está disponível
       if (!navigator?.clipboard) {
         console.error("Clipboard API not available");
         return;
       }
 
-      // Extrair texto puro do HTML do highlight.js
-      const preElement = document.querySelector("[data-code-block]");
-      if (!preElement) return;
+      // ✅ Direct ref access - O(1), no DOM query (Vercel 5.2)
+      const text = preRef.current?.textContent || "";
+      if (!text) return;
 
-      // Obter apenas o texto sem tags HTML
-      const text = preElement.textContent || "";
       await navigator.clipboard.writeText(text);
-
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error("Failed to copy:", err);
     }
-  };
+  }, []);
 
   return (
     <div className="group relative my-4">
       <pre
+        ref={preRef}
         className="hljs overflow-x-auto rounded-lg border border-border bg-muted p-4 text-sm leading-relaxed"
-        data-code-block
       >
         {children}
       </pre>

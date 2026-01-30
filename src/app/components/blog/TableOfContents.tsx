@@ -5,6 +5,7 @@ import {
   startTransition,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -17,16 +18,16 @@ interface TableOfContentsProps {
   headings: Heading[];
 }
 
-const HEADER_HEIGHT = 100; // Offset for fixed header + some padding
+const HEADER_HEIGHT = 100;
 
 /**
- * TableOfContents component with improved scroll spy
+ * TableOfContents component with optimized scroll spy
  *
  * Best Practices Applied:
  * - Passive event listeners for scroll performance (Vercel 4.2)
  * - startTransition for non-urgent state updates (Vercel 5.7)
- * - URL hash synchronization on initial load
- * - MutationObserver for dynamic DOM content
+ * - useMemo for expensive computations (Vercel 5.2)
+ * - Consolidated useEffect to reduce executions (Vercel 3.6)
  * - Lazy state initialization (Vercel 5.6)
  */
 export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
@@ -41,15 +42,15 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
   const tickingRef = useRef(false);
   const headingPositionsRef = useRef<Map<string, number>>(new Map());
   const isScrollingRef = useRef(false);
+  const observerRef = useRef<MutationObserver | null>(null);
 
-  // Sync isScrolling ref with state
+  // Sync isScrolling ref with state (Vercel 5.2 - useLatest pattern)
   useEffect(() => {
     isScrollingRef.current = isScrolling;
   }, [isScrolling]);
 
   /**
    * Update cached heading positions
-   * Called on mount, resize, and when headings change
    */
   const updateHeadingPositions = useCallback(() => {
     const positions = new Map<string, number>();
@@ -77,16 +78,13 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
 
     let activeHeadingId = headings[0].id;
 
-    // Find the last heading that is above the trigger offset
     for (const heading of headings) {
       const position = headingPositionsRef.current.get(heading.id);
       if (position === undefined) continue;
 
-      // If this heading is above the trigger point, it's a candidate
       if (position <= triggerOffset) {
         activeHeadingId = heading.id;
       } else {
-        // We've passed the trigger point, stop here
         break;
       }
     }
@@ -95,7 +93,8 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
   }, [headings]);
 
   /**
-   * Handle scroll events with RAF throttling
+   * ✅ Consolidated useEffect for scroll, resize, and mutation observers
+   * Reduces from 3 separate effects to 1 with proper cleanup
    */
   useEffect(() => {
     if (headings.length === 0) return;
@@ -103,6 +102,7 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
     // Initial position calculation
     updateHeadingPositions();
 
+    // Scroll handler with RAF throttling
     const handleScroll = () => {
       if (isScrollingRef.current || tickingRef.current) return;
 
@@ -121,92 +121,70 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
       });
     };
 
-    // Passive listener for better performance
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    // Recalculate positions on resize
+    // Resize handler
     const handleResize = () => {
       updateHeadingPositions();
-      // Re-check active heading after resize
       const newActiveId = findActiveHeading();
       if (newActiveId !== activeId) {
         startTransition(() => setActiveId(newActiveId));
       }
     };
 
-    window.addEventListener("resize", handleResize, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [headings, findActiveHeading, updateHeadingPositions, activeId]);
-
-  /**
-   * Setup MutationObserver to handle dynamically added content
-   * Re-calculates positions when DOM changes (e.g., images loading)
-   */
-  useEffect(() => {
-    if (headings.length === 0) return;
-
+    // MutationObserver for dynamic content
     const handleMutations = () => {
-      // Small delay to let layout settle
-      requestAnimationFrame(() => {
-        updateHeadingPositions();
-      });
+      requestAnimationFrame(updateHeadingPositions);
     };
 
-    const observer = new MutationObserver(handleMutations);
-
-    // Observe the article container for changes
+    observerRef.current = new MutationObserver(handleMutations);
     const article = document.querySelector("article");
     if (article) {
-      observer.observe(article, {
+      observerRef.current.observe(article, {
         childList: true,
         subtree: true,
-        attributes: true, // Watch for attribute changes (like images loading)
+        attributes: true,
         attributeFilter: ["src", "class"],
       });
     }
 
-    // Also recalculate when images load
-    const handleImageLoad = () => {
-      updateHeadingPositions();
-    };
+    // Event listeners with passive flag (Vercel 4.2)
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleResize, { passive: true });
+    window.addEventListener("load", updateHeadingPositions, { passive: true });
 
-    window.addEventListener("load", handleImageLoad);
-
+    // ✅ Comprehensive cleanup
     return () => {
-      observer.disconnect();
-      window.removeEventListener("load", handleImageLoad);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("load", updateHeadingPositions);
+      observerRef.current?.disconnect();
+      observerRef.current = null;
     };
-  }, [headings, updateHeadingPositions]);
+  }, [headings, findActiveHeading, updateHeadingPositions, activeId]);
 
   /**
    * Sync with URL hash on initial load
+   * ✅ Check DOM directly instead of headings array to avoid dependency issues
    */
   useEffect(() => {
     const hash = window.location.hash.slice(1);
     if (hash) {
-      const targetHeading = headings.find((h) => h.id === hash);
-      if (targetHeading) {
+      // Check if element exists in DOM directly
+      const element = document.getElementById(hash);
+      if (element) {
         setActiveId(hash);
 
-        // Scroll to element after a short delay to ensure DOM is ready
         requestAnimationFrame(() => {
-          const element = document.getElementById(hash);
-          if (element) {
-            const rect = element.getBoundingClientRect();
-            const scrollTop = window.scrollY + rect.top - HEADER_HEIGHT + 20;
-            window.scrollTo({ top: scrollTop, behavior: "instant" });
-          }
+          const rect = element.getBoundingClientRect();
+          const scrollTop = window.scrollY + rect.top - HEADER_HEIGHT + 20;
+          window.scrollTo({ top: scrollTop, behavior: "instant" });
         });
       }
     }
-  }, [headings]);
+  }, []); // Only on mount
 
   /**
    * Handle click on TOC link
+   * ✅ useCallback with stable dependencies
    */
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
@@ -215,11 +193,8 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
       if (!element) return;
 
       setIsScrolling(true);
-
-      // Update URL hash
       window.history.pushState(null, "", `#${id}`);
 
-      // Calculate scroll position with offset
       const rect = element.getBoundingClientRect();
       const scrollTop = window.scrollY + rect.top - HEADER_HEIGHT + 20;
 
@@ -228,13 +203,12 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
         behavior: "smooth",
       });
 
-      // Set active immediately
       startTransition(() => setActiveId(id));
 
       // Reset scrolling state after animation
       const handleScrollEnd = () => {
         setIsScrolling(false);
-        updateHeadingPositions(); // Recalculate after scroll
+        updateHeadingPositions();
       };
 
       window.addEventListener("scrollend", handleScrollEnd, {
@@ -242,13 +216,42 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
         once: true,
       });
 
-      // Fallback timeout
-      setTimeout(() => {
-        setIsScrolling(false);
-      }, 1000);
+      setTimeout(() => setIsScrolling(false), 1000);
     },
     [updateHeadingPositions],
   );
+
+  // ✅ useMemo for rendered headings to avoid re-creation on every render
+  const renderedHeadings = useMemo(() => {
+    if (headings.length === 0) return null;
+
+    return headings.map((heading) => {
+      const isActive = activeId === heading.id;
+      const isH3 = heading.level === 3;
+
+      return (
+        <li key={heading.id}>
+          <a
+            href={`#${heading.id}`}
+            onClick={(e) => handleClick(e, heading.id)}
+            className={`
+              relative block py-1 sm:py-1.5 text-xs sm:text-sm transition-all duration-200
+              ease-[cubic-bezier(0.25,1,0.5,1)]
+              ${isH3 ? "pl-5 sm:pl-6" : "pl-3 sm:pl-4"}
+              ${
+                isActive
+                  ? "text-accent font-medium border-l-2 border-accent -ml-[1px]"
+                  : "text-muted-foreground hover:text-foreground border-l-2 border-transparent -ml-[1px] hover:border-border"
+              }
+              ${isScrolling && activeId === heading.id ? "animate-pulse" : ""}
+            `}
+          >
+            {heading.text}
+          </a>
+        </li>
+      );
+    });
+  }, [headings, activeId, isScrolling, handleClick]);
 
   if (headings.length === 0) return null;
 
@@ -259,32 +262,7 @@ export const TableOfContents = memo(({ headings }: TableOfContentsProps) => {
       </MonoText>
 
       <ul className="space-y-1 sm:space-y-2 border-l border-border">
-        {headings.map((heading) => {
-          const isActive = activeId === heading.id;
-          const isH3 = heading.level === 3;
-
-          return (
-            <li key={heading.id}>
-              <a
-                href={`#${heading.id}`}
-                onClick={(e) => handleClick(e, heading.id)}
-                className={`
-                  relative block py-1 sm:py-1.5 text-xs sm:text-sm transition-all duration-200
-                  ease-[cubic-bezier(0.25,1,0.5,1)]
-                  ${isH3 ? "pl-5 sm:pl-6" : "pl-3 sm:pl-4"}
-                  ${
-                    isActive
-                      ? "text-accent font-medium border-l-2 border-accent -ml-[1px]"
-                      : "text-muted-foreground hover:text-foreground border-l-2 border-transparent -ml-[1px] hover:border-border"
-                  }
-                  ${isScrolling && activeId === heading.id ? "animate-pulse" : ""}
-                `}
-              >
-                {heading.text}
-              </a>
-            </li>
-          );
-        })}
+        {renderedHeadings}
       </ul>
     </nav>
   );
