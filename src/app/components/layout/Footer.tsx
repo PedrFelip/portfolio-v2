@@ -191,7 +191,7 @@ export const Footer = memo(() => {
             © {t.footer.year} Pedro Felipe
           </MonoText>
           <MonoText className="text-xs sm:text-sm text-faint">
-            v2.14.28
+            v2.16.41 
           </MonoText>
         </div>
       </div>
