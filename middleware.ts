@@ -1,7 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { DEFAULT_LANGUAGE, type Language } from "./src/app/lib/i18n";
 
-const SUPPORTED_LANGUAGES = ["en", "pt"];
-const DEFAULT_LANGUAGE = "en";
+function isLanguage(lang: string): lang is Language {
+  return lang === "en" || lang === "pt";
+}
 
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -18,25 +20,19 @@ export function middleware(request: NextRequest) {
 
   // Check if path already has language prefix
   const languagePrefix = pathname.split("/")[1];
-  if (SUPPORTED_LANGUAGES.includes(languagePrefix)) {
+  if (isLanguage(languagePrefix)) {
     return NextResponse.next();
   }
 
   // Get preferred language from Accept-Language header
   const acceptLanguage = request.headers.get("accept-language") || "";
-  let preferredLanguage = DEFAULT_LANGUAGE;
+  let preferredLanguage: Language = DEFAULT_LANGUAGE;
 
   // Parse accept-language header
-  for (const lang of SUPPORTED_LANGUAGES) {
-    if (acceptLanguage.includes(lang)) {
-      preferredLanguage = lang;
-      break;
-    }
-  }
-
-  // Special case for Portuguese variants
   if (acceptLanguage.toLowerCase().includes("pt")) {
     preferredLanguage = "pt";
+  } else if (acceptLanguage.includes("en")) {
+    preferredLanguage = "en";
   }
 
   // Redirect to /[lang]/...
